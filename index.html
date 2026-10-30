@@ -235,7 +235,7 @@
             </div>
         </div>
 
-        <!-- 1. AGENDA & JADWAL BATAS WAKTU PELAPORAN (DINAMIS SPREADSHEET) -->
+        <!-- 1. AGENDA & JADWAL BATAS WAKTU PELAPORAN (3 WARNA STATUS & JAM LENGKAP) -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 select-none">
             <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
                 <div class="flex items-center gap-2">
@@ -246,48 +246,48 @@
                 </div>
                 <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800">T.A. 2027</span>
             </div>
-            <!-- Di-render dinamis oleh JavaScript dari tab Agenda_Tahapan -->
+            <!-- Wadah kartu agenda diisi dinamis dari database spreadsheet -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs" id="agendaTimelineContainer">
                 <div class="p-4 text-center text-slate-400 italic col-span-full">Memuat jadwal agenda dari database...</div>
             </div>
         </div>
 
-        <!-- 2. NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN (COUNTDOWN BERDETIK REAL-TIME) -->
-        <div id="agendaUserCountdownBox" class="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white p-3.5 sm:p-4 rounded-2xl shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 select-none">
-            <div class="flex items-center gap-3">
-                <div class="p-2.5 bg-amber-400 text-slate-950 rounded-xl text-lg font-black shrink-0">
+        <!-- 2. NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN (RESPONSIF DI HP ANDROID & LAPTOP) -->
+        <div id="agendaUserCountdownBox" class="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white p-3 sm:p-4 rounded-2xl shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-3 select-none w-full max-w-full overflow-hidden">
+            <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0 w-full md:w-auto flex-1">
+                <div class="p-2 sm:p-2.5 bg-amber-400 text-slate-950 rounded-xl text-base sm:text-lg font-black shrink-0 mt-0.5 sm:mt-0">
                     <i class="fa-solid fa-stopwatch animate-pulse"></i>
                 </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-indigo-500/80 text-white" id="countdownTahapTag">Tahapan Aktif</span>
-                        <span class="text-[10px] font-bold text-amber-300" id="countdownDeadlineText">Batas Akhir: -</span>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                        <span class="text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-600 text-white shrink-0 tracking-wider" id="countdownTahapTag">SEDANG BERJALAN</span>
+                        <span class="text-[10px] sm:text-[11px] font-bold text-amber-300 break-words" id="countdownDeadlineText">Batas Akhir: -</span>
                     </div>
-                    <h4 class="text-xs sm:text-sm font-bold text-white mt-0.5 truncate" id="countdownTitle">
+                    <h4 class="text-xs sm:text-sm font-bold text-white mt-1 break-words line-clamp-2 leading-snug" id="countdownTitle">
                         Sisa Waktu Penginputan Unit Kerja Anda
                     </h4>
                 </div>
             </div>
             
-            <div class="flex items-center gap-1.5 font-mono text-center">
-                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 min-w-[46px]">
-                    <span id="timerDays" class="text-base sm:text-lg font-black text-amber-400 block leading-tight">00</span>
-                    <span class="text-[8px] uppercase text-slate-300 font-sans">Hari</span>
+            <div class="flex items-center justify-center gap-1 sm:gap-1.5 font-mono text-center w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-white/10 shrink-0">
+                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 flex-1 sm:flex-none min-w-[42px] sm:min-w-[48px]">
+                    <span id="timerDays" class="text-sm sm:text-lg font-black text-amber-400 block leading-tight">00</span>
+                    <span class="text-[8px] uppercase text-slate-300 font-sans block">Hari</span>
                 </div>
-                <span class="font-bold text-slate-400">:</span>
-                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 min-w-[46px]">
-                    <span id="timerHours" class="text-base sm:text-lg font-black text-white block leading-tight">00</span>
-                    <span class="text-[8px] uppercase text-slate-300 font-sans">Jam</span>
+                <span class="font-bold text-slate-400 text-xs sm:text-sm">:</span>
+                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 flex-1 sm:flex-none min-w-[42px] sm:min-w-[48px]">
+                    <span id="timerHours" class="text-sm sm:text-lg font-black text-white block leading-tight">00</span>
+                    <span class="text-[8px] uppercase text-slate-300 font-sans block">Jam</span>
                 </div>
-                <span class="font-bold text-slate-400">:</span>
-                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 min-w-[46px]">
-                    <span id="timerMinutes" class="text-base sm:text-lg font-black text-white block leading-tight">00</span>
-                    <span class="text-[8px] uppercase text-slate-300 font-sans">Menit</span>
+                <span class="font-bold text-slate-400 text-xs sm:text-sm">:</span>
+                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 flex-1 sm:flex-none min-w-[42px] sm:min-w-[48px]">
+                    <span id="timerMinutes" class="text-sm sm:text-lg font-black text-white block leading-tight">00</span>
+                    <span class="text-[8px] uppercase text-slate-300 font-sans block">Menit</span>
                 </div>
-                <span class="font-bold text-slate-400">:</span>
-                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 min-w-[46px]">
-                    <span id="timerSeconds" class="text-base sm:text-lg font-black text-rose-400 block leading-tight">00</span>
-                    <span class="text-[8px] uppercase text-slate-300 font-sans">Detik</span>
+                <span class="font-bold text-slate-400 text-xs sm:text-sm">:</span>
+                <div class="bg-black/40 px-2 py-1 rounded-lg border border-white/10 flex-1 sm:flex-none min-w-[42px] sm:min-w-[48px]">
+                    <span id="timerSeconds" class="text-sm sm:text-lg font-black text-rose-400 block leading-tight">00</span>
+                    <span class="text-[8px] uppercase text-slate-300 font-sans block">Detik</span>
                 </div>
             </div>
         </div>
@@ -926,7 +926,7 @@
         let masterBarangList = [];
         let childUnitsList = [];
         let agendaList = [];
-        let complianceReportData = []; // Data rekapitulasi seluruh 84 unit se-Konawe
+        let complianceReportData = []; // Data rekapitulasi seluruh unit se-Konawe
         let currentTab = "RKBMD";
         let modalActiveFilter = "SEMUA";
 
@@ -936,7 +936,6 @@
 
         // Variabel Countdown Timer
         let countdownTimer = null;
-        let activeTargetMs = 0;
         let serverTimeOffsetMs = 0;
 
         // Callback Dialog Modal Sistem
@@ -1179,9 +1178,8 @@
                     masterBarangList = res.refBarang || [];
                     childUnitsList = res.childUnits || currentUser.child_units || [];
                     agendaList = res.agenda || [];
-                    complianceReportData = res.monitoringKepatuhan || []; // Rekapitulasi lengkap seluruh 84 unit se-Konawe
+                    complianceReportData = res.monitoringKepatuhan || [];
 
-                    // Sinkronisasi Waktu Server
                     if (res.serverTime) {
                         const parsedServerTime = new Date(res.serverTime.replace(/-/g, '/')).getTime();
                         if (!isNaN(parsedServerTime)) {
@@ -1192,7 +1190,7 @@
                     populateSkpdSelect();
                     renderAllViews();
                     
-                    // Render 4 Kartu Agenda Dinamis langsung dari tab Spreadsheet Agenda_Tahapan
+                    // Render 4 Kartu Agenda Dinamis dari Spreadsheet
                     renderAgendaTimeline(agendaList);
                     
                     // Jalankan Mesin Countdown Jam Mundur Real-Time
@@ -1218,7 +1216,7 @@
         }
 
         // =================================================================
-        // 6. RENDER 4 KARTU AGENDA DINAMIS DARI DATABASE SPREADSHEET (POIN 3)
+        // 6. RENDER KARTU AGENDA DINAMIS (POIN 1: 3 WARNA STATUS & JAM LENGKAP)
         // =================================================================
         function renderAgendaTimeline(list) {
             const container = document.getElementById('agendaTimelineContainer');
@@ -1229,34 +1227,55 @@
                 return;
             }
 
-            // 4 Tema warna asli Anda (Teal, Blue, Indigo, Amber) berulang rapi
-            const colorThemes = [
-                { bg: "bg-teal-50/60", border: "border-teal-200", text: "text-teal-800", subText: "text-teal-900", borderSub: "border-teal-300", badgeBg: "bg-teal-200", badgeText: "text-teal-900" },
-                { bg: "bg-blue-50/60", border: "border-blue-200", text: "text-blue-800", subText: "text-blue-900", borderSub: "border-blue-300", badgeBg: "bg-blue-200", badgeText: "text-blue-900" },
-                { bg: "bg-indigo-50/60", border: "border-indigo-200", text: "text-indigo-800", subText: "text-indigo-900", borderSub: "border-indigo-300", badgeBg: "bg-indigo-200", badgeText: "text-indigo-900" },
-                { bg: "bg-amber-50/60", border: "border-amber-200", text: "text-amber-800", subText: "text-amber-900", borderSub: "border-amber-300", badgeBg: "bg-amber-200", badgeText: "text-amber-900" }
-            ];
+            container.innerHTML = list.map((a) => {
+                const statusStr = (a.statusPelaksanaan || "").toLowerCase();
+                
+                // STANDARISASI HANYA 3 STATUS & 3 WARNA SAJA
+                let statusLabel = "SEDANG BERJALAN";
+                let theme = {
+                    cardBg: "bg-emerald-50/70",
+                    border: "border-emerald-200",
+                    headerText: "text-emerald-800",
+                    badgeBg: "bg-emerald-600 text-white",
+                    dateText: "text-emerald-900",
+                    dateBorder: "border-emerald-300"
+                };
 
-            container.innerHTML = list.map((a, idx) => {
-                const theme = colorThemes[idx % colorThemes.length];
-                const statusBadge = a.isExpired 
-                    ? `<span class="px-1.5 py-0.5 rounded bg-rose-200 text-rose-800 text-[9px] font-bold">Berakhir</span>`
-                    : (a.statusPelaksanaan.toLowerCase() === "aktif" 
-                        ? `<span class="px-1.5 py-0.5 rounded ${theme.badgeBg} ${theme.badgeText} text-[9px] font-bold">Aktif</span>`
-                        : `<span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 text-[9px] font-bold">${a.statusPelaksanaan}</span>`);
+                if (a.isExpired || statusStr.includes("berakhir") || statusStr.includes("selesai")) {
+                    statusLabel = "BERAKHIR";
+                    theme = {
+                        cardBg: "bg-rose-50/70",
+                        border: "border-rose-200",
+                        headerText: "text-rose-800",
+                        badgeBg: "bg-rose-600 text-white",
+                        dateText: "text-rose-900",
+                        dateBorder: "border-rose-300"
+                    };
+                } else if (statusStr.includes("terjadwal") || statusStr.includes("menunggu") || statusStr.includes("akan")) {
+                    statusLabel = "TERJADWAL";
+                    theme = {
+                        cardBg: "bg-blue-50/70",
+                        border: "border-blue-200",
+                        headerText: "text-blue-800",
+                        badgeBg: "bg-blue-600 text-white",
+                        dateText: "text-blue-900",
+                        dateBorder: "border-blue-300"
+                    };
+                }
 
+                // Bagian Jam ditampilkan lengkap tanpa truncate (tidak terpotong di HP/Laptop)
                 return `
-                    <div class="p-3 ${theme.bg} border ${theme.border} rounded-xl flex flex-col justify-between">
+                    <div class="p-3 ${theme.cardBg} border ${theme.border} rounded-xl flex flex-col justify-between">
                         <div>
-                            <div class="flex justify-between items-center ${theme.text} font-black text-[10px] uppercase">
+                            <div class="flex justify-between items-center ${theme.headerText} font-black text-[10px] uppercase gap-1">
                                 <span class="truncate">${a.tahap}: ${a.sasaranUnit}</span>
-                                ${statusBadge}
+                                <span class="px-2 py-0.5 rounded ${theme.badgeBg} text-[9px] font-black shrink-0 tracking-wider">${statusLabel}</span>
                             </div>
                             <p class="text-slate-700 font-semibold text-[11px] mt-1 line-clamp-2">${a.namaKegiatan}</p>
                         </div>
-                        <div class="mt-2.5 pt-2 border-t ${theme.border} flex justify-between items-center text-[10px]">
-                            <span class="text-slate-500 font-medium">Batas Waktu:</span>
-                            <span class="font-bold ${theme.subText} bg-white px-2 py-0.5 rounded border ${theme.borderSub} truncate max-w-[130px]">${a.batasAkhir}</span>
+                        <div class="mt-2.5 pt-2 border-t ${theme.border} flex flex-wrap justify-between items-center gap-1 text-[10px]">
+                            <span class="text-slate-500 font-medium shrink-0">Batas Waktu:</span>
+                            <span class="font-bold ${theme.dateText} bg-white px-2 py-0.5 rounded border ${theme.dateBorder} text-[10px] break-words text-right flex-1 sm:flex-none whitespace-normal leading-tight">${a.batasAkhir}</span>
                         </div>
                     </div>
                 `;
@@ -1264,7 +1283,7 @@
         }
 
         // =================================================================
-        // 7. MESIN COUNTDOWN JAM MUNDUR (REAL-TIME BERDETIK) (POIN 2)
+        // 7. MESIN COUNTDOWN JAM MUNDUR (POIN 2: RESPONSIF DI HP & 3 WARNA STATUS)
         // =================================================================
         function initUserCountdown(activeAgenda) {
             if (countdownTimer) clearInterval(countdownTimer);
@@ -1279,20 +1298,34 @@
                 targetTime = new Date(activeAgenda.deadlineIso).getTime();
                 titleEl.innerText = activeAgenda.namaKegiatan || `Batas Penginputan: ${currentUser.nama_skpd}`;
                 deadlineText.innerText = `Batas Akhir: ${activeAgenda.batasAkhir}`;
-                tahapTag.innerText = activeAgenda.tahap || "Tahapan Aktif";
+                
+                // Status sinkron 3 warna
+                const stLower = (activeAgenda.statusPelaksanaan || "").toLowerCase();
+                if (activeAgenda.isExpired || stLower.includes("berakhir")) {
+                    tahapTag.innerText = "BERAKHIR";
+                    tahapTag.className = "text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-rose-600 text-white shrink-0 tracking-wider";
+                } else if (stLower.includes("terjadwal")) {
+                    tahapTag.innerText = "TERJADWAL";
+                    tahapTag.className = "text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-blue-600 text-white shrink-0 tracking-wider";
+                } else {
+                    tahapTag.innerText = "SEDANG BERJALAN";
+                    tahapTag.className = "text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-600 text-white shrink-0 tracking-wider";
+                }
+
             } else if (activeAgenda && activeAgenda.sisaWaktuMs > 0) {
                 targetTime = Date.now() + activeAgenda.sisaWaktuMs;
                 titleEl.innerText = activeAgenda.namaKegiatan || `Batas Penginputan: ${currentUser.nama_skpd}`;
                 deadlineText.innerText = `Batas Akhir: ${activeAgenda.batasAkhir}`;
-                tahapTag.innerText = activeAgenda.tahap || "Tahapan Aktif";
+                tahapTag.innerText = "SEDANG BERJALAN";
+                tahapTag.className = "text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-600 text-white shrink-0 tracking-wider";
             } else {
-                // Fallback otomatis jika agenda belum ditentukan di spreadsheet
                 const now = new Date();
                 const fallbackDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
                 targetTime = fallbackDate.getTime();
                 titleEl.innerText = `Sisa Waktu Penginputan: ${currentUser.nama_skpd}`;
                 deadlineText.innerText = `Batas Akhir: Akhir Bulan Ini`;
-                tahapTag.innerText = "Tahapan Berjalan";
+                tahapTag.innerText = "SEDANG BERJALAN";
+                tahapTag.className = "text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-600 text-white shrink-0 tracking-wider";
             }
 
             function updateTime() {
@@ -1305,12 +1338,11 @@
                     document.getElementById('timerHours').innerText = "00";
                     document.getElementById('timerMinutes').innerText = "00";
                     document.getElementById('timerSeconds').innerText = "00";
-                    tahapTag.innerText = "Batas Waktu Berakhir";
-                    tahapTag.className = "text-[10px] font-black uppercase px-2 py-0.5 rounded bg-rose-600 text-white animate-pulse";
+                    tahapTag.innerText = "BERAKHIR";
+                    tahapTag.className = "text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-rose-600 text-white animate-pulse shrink-0 tracking-wider";
                     return;
                 }
 
-                // Kalkulasi hari, jam, menit, detik
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -1914,11 +1946,9 @@
             document.getElementById('statMasterInfo').innerText = `${masterSkpdList.length} Unit / ${masterBarangList.length} Barang`;
         }
 
-        // Perhitungan 6 Metrik Kepatuhan Global Se-Kabupaten Konawe
         function getCompliance() {
             let list = complianceReportData;
             
-            // Fallback jika belum terisi dari backend
             if (!list || list.length === 0) {
                 list = masterSkpdList.map(s => ({
                     nama: s.nama,
@@ -1934,7 +1964,6 @@
                 }));
             }
 
-            // Normalisasi penempatan 6 kategori utama (Badan & Dinas, Kecamatan, Puskesmas, Kelurahan, Bagian Setda)
             const normalized = list.map(s => {
                 let kat = s.kategori || "Dinas & Badan";
                 const upper = s.nama.toUpperCase();
@@ -1996,7 +2025,6 @@
         function updateComplianceDonut() {
             const c = getCompliance();
 
-            // 6 Kartu Metrik Kepatuhan Global
             document.getElementById('metricDinasSudah').innerText = c.dinasSudah;
             document.getElementById('metricDinasTotal').innerText = `/ ${c.dinasTotal}`;
             document.getElementById('metricDinasPercent').innerText = `${c.dinasTotal ? Math.round((c.dinasSudah / c.dinasTotal) * 100) : 0}% Selesai`;
@@ -2025,7 +2053,7 @@
             document.getElementById('legendDinasVal').innerText = c.dinasSudah;
             document.getElementById('legendKecVal').innerText = c.kecSudah;
             document.getElementById('legendPkmVal').innerText = c.pkmSudah;
-            document.getElementById('legendKelVal').innerText = c.kelSudah;
+            document.getElementById('legendKelVal').innerText = c.kelKel = c.kelSudah;
             document.getElementById('legendBagianVal').innerText = c.bagianSudah;
 
             const circumference = 2 * Math.PI * 55; // 345.575
