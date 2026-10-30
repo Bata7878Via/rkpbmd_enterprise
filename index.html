@@ -235,7 +235,7 @@
             </div>
         </div>
 
-        <!-- 1. AGENDA & JADWAL BATAS WAKTU PELAPORAN (SESUAI TAMPILAN ASLI ANDA) -->
+        <!-- 1. AGENDA & JADWAL BATAS WAKTU PELAPORAN (DINAMIS SPREADSHEET) -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 select-none">
             <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
                 <div class="flex items-center gap-2">
@@ -246,63 +246,13 @@
                 </div>
                 <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800">T.A. 2027</span>
             </div>
+            <!-- Di-render dinamis oleh JavaScript dari tab Agenda_Tahapan -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs" id="agendaTimelineContainer">
-                <div class="p-3 bg-teal-50/60 border border-teal-200 rounded-xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center text-teal-800 font-black text-[10px] uppercase">
-                            <span>Tahap 1: Puskesmas &amp; Kelurahan</span>
-                            <span class="px-1.5 py-0.5 rounded bg-teal-200 text-teal-900 text-[9px]">Prioritas</span>
-                        </div>
-                        <p class="text-slate-600 font-semibold text-[11px] mt-1">Input usulan ke SKPD Induk (Dinkes &amp; Kecamatan)</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t border-teal-200/60 flex justify-between items-center text-[10px]">
-                        <span class="text-slate-500">Batas Waktu:</span>
-                        <span class="font-bold text-teal-900 bg-white px-2 py-0.5 rounded border border-teal-300">15 Mei 2026</span>
-                    </div>
-                </div>
-                <div class="p-3 bg-blue-50/60 border border-blue-200 rounded-xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center text-blue-800 font-black text-[10px] uppercase">
-                            <span>Tahap 2: SKPD Induk &amp; Kecamatan</span>
-                            <span class="px-1.5 py-0.5 rounded bg-blue-200 text-blue-900 text-[9px]">Verifikasi</span>
-                        </div>
-                        <p class="text-slate-600 font-semibold text-[11px] mt-1">Rekapitulasi usulan internal &amp; submit ke BPKAD</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t border-blue-200/60 flex justify-between items-center text-[10px]">
-                        <span class="text-slate-500">Batas Waktu:</span>
-                        <span class="font-bold text-blue-900 bg-white px-2 py-0.5 rounded border border-blue-300">31 Mei 2026</span>
-                    </div>
-                </div>
-                <div class="p-3 bg-indigo-50/60 border border-indigo-200 rounded-xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center text-indigo-800 font-black text-[10px] uppercase">
-                            <span>Tahap 3: Penelaahan BPKAD</span>
-                            <span class="px-1.5 py-0.5 rounded bg-indigo-200 text-indigo-900 text-[9px]">Pengelola</span>
-                        </div>
-                        <p class="text-slate-600 font-semibold text-[11px] mt-1">Penelaahan Standar Kebutuhan Riil &amp; SSH</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t border-indigo-200/60 flex justify-between items-center text-[10px]">
-                        <span class="text-slate-500">Batas Waktu:</span>
-                        <span class="font-bold text-indigo-900 bg-white px-2 py-0.5 rounded border border-indigo-300">30 Juni 2026</span>
-                    </div>
-                </div>
-                <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center text-amber-800 font-black text-[10px] uppercase">
-                            <span>Tahap 4: RKPBMD (Perubahan)</span>
-                            <span class="px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 text-[9px]">Penyesuaian</span>
-                        </div>
-                        <p class="text-slate-600 font-semibold text-[11px] mt-1">Usulan perubahan pemeliharaan tahun berjalan</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t border-amber-200/60 flex justify-between items-center text-[10px]">
-                        <span class="text-slate-500">Jadwal:</span>
-                        <span class="font-bold text-amber-900 bg-white px-2 py-0.5 rounded border border-amber-300">Triwulan III 2026</span>
-                    </div>
-                </div>
+                <div class="p-4 text-center text-slate-400 italic col-span-full">Memuat jadwal agenda dari database...</div>
             </div>
         </div>
 
-        <!-- 2. NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN (PENAMBAHAN BARU) -->
+        <!-- 2. NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN (COUNTDOWN BERDETIK REAL-TIME) -->
         <div id="agendaUserCountdownBox" class="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white p-3.5 sm:p-4 rounded-2xl shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 select-none">
             <div class="flex items-center gap-3">
                 <div class="p-2.5 bg-amber-400 text-slate-950 rounded-xl text-lg font-black shrink-0">
@@ -342,7 +292,7 @@
             </div>
         </div>
 
-        <!-- 3. MONITORING KEPATUHAN PENGINPUTAN SKPD, PUSKESMAS & KELURAHAN (SESUAI TAMPILAN ASLI) -->
+        <!-- 3. MONITORING KEPATUHAN PENGINPUTAN (6 METRIK GLOBAL & 2 DONUT INTERAKTIF) -->
         <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
                 <div>
@@ -353,7 +303,7 @@
                         <h2 class="font-bold text-slate-800 text-sm sm:text-base">Monitoring Kepatuhan Penginputan SKPD, Puskesmas, &amp; Kelurahan</h2>
                     </div>
                     <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 select-none">
-                        Dihitung otomatis dari usulan masuk terhadap daftar seluruh unit kerja terdaftar.
+                        Dihitung otomatis dari usulan masuk terhadap daftar seluruh unit kerja terdaftar se-Kabupaten Konawe.
                     </p>
                 </div>
                 <button type="button" onclick="openSkpdDetailsModal('SEMUA')" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 cursor-pointer active:scale-95 w-full sm:w-auto justify-center select-none">
@@ -361,7 +311,7 @@
                 </button>
             </div>
 
-            <!-- 6 KARTU KENDALI KATEGORI ASLI ANDA -->
+            <!-- 6 KARTU KENDALI KATEGORI -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3 select-none">
                 <div onclick="openSkpdDetailsModal('DINAS_BADAN')" class="p-3 bg-blue-50/70 border border-blue-200 rounded-xl cursor-pointer hover:shadow-md transition active:scale-95">
                     <div class="flex items-center justify-between text-blue-700 mb-1">
@@ -436,7 +386,7 @@
                 </div>
             </div>
 
-            <!-- DUA DIAGRAM DONUT SVG ASLI -->
+            <!-- DUA DIAGRAM DONUT SVG -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1 select-none">
                 <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex flex-col items-center">
                     <h3 class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide text-center">Status Penginputan Seluruh Entitas Daerah</h3>
@@ -761,7 +711,7 @@
 
     </div>
 
-    <!-- MODAL PENCARIAN SKPD / UNIT KERJA -->
+    <!-- MODAL PENCARIAN SKPD -->
     <div id="skpdModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 z-50 hidden select-none">
         <div class="bg-white rounded-2xl max-w-xl w-full p-4 sm:p-5 shadow-2xl flex flex-col max-h-[85vh] border border-slate-100">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -976,6 +926,7 @@
         let masterBarangList = [];
         let childUnitsList = [];
         let agendaList = [];
+        let complianceReportData = []; // Data rekapitulasi seluruh 84 unit se-Konawe
         let currentTab = "RKBMD";
         let modalActiveFilter = "SEMUA";
 
@@ -985,7 +936,8 @@
 
         // Variabel Countdown Timer
         let countdownTimer = null;
-        let activeDeadlineMs = 0;
+        let activeTargetMs = 0;
+        let serverTimeOffsetMs = 0;
 
         // Callback Dialog Modal Sistem
         let dialogConfirmCallback = null;
@@ -1107,11 +1059,7 @@
 
                 if (res.status === "success") {
                     hideConnectionError();
-                    openServerStatusModal(
-                        true,
-                        "Koneksi Server Normal",
-                        "Koneksi ke Server Database E-RKBMD & RKPBMD Pemerintah Kabupaten Konawe terverifikasi stabil dan siap melayani penginputan data."
-                    );
+                    openServerStatusModal(true, "Koneksi Server Normal", "Koneksi ke Server Database E-RKBMD & RKPBMD Pemerintah Kabupaten Konawe terverifikasi stabil.");
                 } else {
                     openServerStatusModal(false, "Respon Server Mengalami Kendala", res.message || "Gagal sinkronisasi data dengan server.");
                 }
@@ -1208,14 +1156,13 @@
             const isAdmin = (currentUser.kategori === "Admin");
             const isInduk = currentUser.is_induk || (currentUser.child_units && currentUser.child_units.length > 0);
             
-            // Format Label Persis Contoh Anda: Unit: KECAMATAN UNAAHA (Kecamatan)
             document.getElementById('user-display-label').innerText = `Unit: ${currentUser.nama_skpd} (${currentUser.kategori})${isAdmin ? ' - Administrator' : (isInduk ? ' - Induk' : '')}`;
 
             fetchDataFromDatabase();
             switchMode('RKBMD');
         }
 
-        // 5. FETCH DATA & HIERARKI
+        // 5. FETCH DATA, AGENDA, & KARTU KENDALI DARI SPREADSHEET
         async function fetchDataFromDatabase() {
             showLoader("Menghubungkan ke Database...");
             try {
@@ -1232,10 +1179,25 @@
                     masterBarangList = res.refBarang || [];
                     childUnitsList = res.childUnits || currentUser.child_units || [];
                     agendaList = res.agenda || [];
+                    complianceReportData = res.monitoringKepatuhan || []; // Rekapitulasi lengkap seluruh 84 unit se-Konawe
+
+                    // Sinkronisasi Waktu Server
+                    if (res.serverTime) {
+                        const parsedServerTime = new Date(res.serverTime.replace(/-/g, '/')).getTime();
+                        if (!isNaN(parsedServerTime)) {
+                            serverTimeOffsetMs = parsedServerTime - Date.now();
+                        }
+                    }
 
                     populateSkpdSelect();
                     renderAllViews();
+                    
+                    // Render 4 Kartu Agenda Dinamis langsung dari tab Spreadsheet Agenda_Tahapan
+                    renderAgendaTimeline(agendaList);
+                    
+                    // Jalankan Mesin Countdown Jam Mundur Real-Time
                     initUserCountdown(res.activeAgenda);
+                    
                     hideConnectionError();
                 } else if (res.status === "unauthorized") {
                     showSystemDialog({
@@ -1255,7 +1217,55 @@
             }
         }
 
-        // 6. COUNTDOWN TIMER SESUAI JADWAL AGENDA LOGIN
+        // =================================================================
+        // 6. RENDER 4 KARTU AGENDA DINAMIS DARI DATABASE SPREADSHEET (POIN 3)
+        // =================================================================
+        function renderAgendaTimeline(list) {
+            const container = document.getElementById('agendaTimelineContainer');
+            if (!container) return;
+
+            if (!list || list.length === 0) {
+                container.innerHTML = `<div class="p-4 text-center text-slate-400 italic col-span-full">Belum ada agenda tahapan yang diatur di database spreadsheet.</div>`;
+                return;
+            }
+
+            // 4 Tema warna asli Anda (Teal, Blue, Indigo, Amber) berulang rapi
+            const colorThemes = [
+                { bg: "bg-teal-50/60", border: "border-teal-200", text: "text-teal-800", subText: "text-teal-900", borderSub: "border-teal-300", badgeBg: "bg-teal-200", badgeText: "text-teal-900" },
+                { bg: "bg-blue-50/60", border: "border-blue-200", text: "text-blue-800", subText: "text-blue-900", borderSub: "border-blue-300", badgeBg: "bg-blue-200", badgeText: "text-blue-900" },
+                { bg: "bg-indigo-50/60", border: "border-indigo-200", text: "text-indigo-800", subText: "text-indigo-900", borderSub: "border-indigo-300", badgeBg: "bg-indigo-200", badgeText: "text-indigo-900" },
+                { bg: "bg-amber-50/60", border: "border-amber-200", text: "text-amber-800", subText: "text-amber-900", borderSub: "border-amber-300", badgeBg: "bg-amber-200", badgeText: "text-amber-900" }
+            ];
+
+            container.innerHTML = list.map((a, idx) => {
+                const theme = colorThemes[idx % colorThemes.length];
+                const statusBadge = a.isExpired 
+                    ? `<span class="px-1.5 py-0.5 rounded bg-rose-200 text-rose-800 text-[9px] font-bold">Berakhir</span>`
+                    : (a.statusPelaksanaan.toLowerCase() === "aktif" 
+                        ? `<span class="px-1.5 py-0.5 rounded ${theme.badgeBg} ${theme.badgeText} text-[9px] font-bold">Aktif</span>`
+                        : `<span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 text-[9px] font-bold">${a.statusPelaksanaan}</span>`);
+
+                return `
+                    <div class="p-3 ${theme.bg} border ${theme.border} rounded-xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center ${theme.text} font-black text-[10px] uppercase">
+                                <span class="truncate">${a.tahap}: ${a.sasaranUnit}</span>
+                                ${statusBadge}
+                            </div>
+                            <p class="text-slate-700 font-semibold text-[11px] mt-1 line-clamp-2">${a.namaKegiatan}</p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t ${theme.border} flex justify-between items-center text-[10px]">
+                            <span class="text-slate-500 font-medium">Batas Waktu:</span>
+                            <span class="font-bold ${theme.subText} bg-white px-2 py-0.5 rounded border ${theme.borderSub} truncate max-w-[130px]">${a.batasAkhir}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =================================================================
+        // 7. MESIN COUNTDOWN JAM MUNDUR (REAL-TIME BERDETIK) (POIN 2)
+        // =================================================================
         function initUserCountdown(activeAgenda) {
             if (countdownTimer) clearInterval(countdownTimer);
 
@@ -1263,26 +1273,31 @@
             const deadlineText = document.getElementById('countdownDeadlineText');
             const tahapTag = document.getElementById('countdownTahapTag');
 
-            // Default fallback deadline jika di sheet agenda belum ditentukan
-            let deadlineDate = null;
+            let targetTime = 0;
+
             if (activeAgenda && activeAgenda.deadlineIso) {
-                deadlineDate = new Date(activeAgenda.deadlineIso);
-                titleEl.innerText = activeAgenda.namaKegiatan || `Jadwal Penginputan ${currentUser.nama_skpd}`;
+                targetTime = new Date(activeAgenda.deadlineIso).getTime();
+                titleEl.innerText = activeAgenda.namaKegiatan || `Batas Penginputan: ${currentUser.nama_skpd}`;
                 deadlineText.innerText = `Batas Akhir: ${activeAgenda.batasAkhir}`;
-                tahapTag.innerText = activeAgenda.tahap || "Tahap Penginputan";
+                tahapTag.innerText = activeAgenda.tahap || "Tahapan Aktif";
+            } else if (activeAgenda && activeAgenda.sisaWaktuMs > 0) {
+                targetTime = Date.now() + activeAgenda.sisaWaktuMs;
+                titleEl.innerText = activeAgenda.namaKegiatan || `Batas Penginputan: ${currentUser.nama_skpd}`;
+                deadlineText.innerText = `Batas Akhir: ${activeAgenda.batasAkhir}`;
+                tahapTag.innerText = activeAgenda.tahap || "Tahapan Aktif";
             } else {
-                // Tentukan target otomatis sesuai tahapan unit kerja (standar Konawe 2026/2027)
-                const isPkmOrKel = currentUser.kategori === "Puskesmas" || currentUser.kategori === "Kelurahan";
-                const targetYear = new Date().getFullYear();
-                deadlineDate = isPkmOrKel ? new Date(targetYear, 4, 15, 23, 59, 59) : new Date(targetYear, 4, 31, 23, 59, 59);
-                titleEl.innerText = `Batas Penginputan ${currentUser.nama_skpd}`;
-                deadlineText.innerText = `Batas Akhir: ${isPkmOrKel ? '15 Mei' : '31 Mei'} ${targetYear}`;
-                tahapTag.innerText = isPkmOrKel ? "Tahap 1: Faskes & Kelurahan" : "Tahap 2: SKPD Induk & Kecamatan";
+                // Fallback otomatis jika agenda belum ditentukan di spreadsheet
+                const now = new Date();
+                const fallbackDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+                targetTime = fallbackDate.getTime();
+                titleEl.innerText = `Sisa Waktu Penginputan: ${currentUser.nama_skpd}`;
+                deadlineText.innerText = `Batas Akhir: Akhir Bulan Ini`;
+                tahapTag.innerText = "Tahapan Berjalan";
             }
 
             function updateTime() {
-                const now = new Date().getTime();
-                const diff = deadlineDate.getTime() - now;
+                const now = Date.now() + serverTimeOffsetMs;
+                const diff = targetTime - now;
 
                 if (diff <= 0) {
                     clearInterval(countdownTimer);
@@ -1295,6 +1310,7 @@
                     return;
                 }
 
+                // Kalkulasi hari, jam, menit, detik
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -1310,7 +1326,7 @@
             countdownTimer = setInterval(updateTime, 1000);
         }
 
-        // 7. POPULATE FILTER SKPD & HIERARKI
+        // 8. POPULATE FILTER SKPD
         function populateSkpdSelect() {
             const adminFilterWrapper = document.getElementById('adminSkpdFilterWrapper');
             const adminFilter = document.getElementById('adminSkpdFilter');
@@ -1336,7 +1352,6 @@
                 if (btnCari) btnCari.classList.remove('hidden');
 
             } else if (isInduk) {
-                // SKPD Induk (Kecamatan / Dinkes): Tampilkan filter bawahan di atas tabel
                 adminFilterWrapper.classList.remove('hidden');
                 let filterHtml = `<option value="SEMUA">-- Rekap Gabungan (${currentUser.nama_skpd}) --</option>`;
                 filterHtml += `<option value="${currentUser.nama_skpd}">${currentUser.nama_skpd} (Induk Sendiri)</option>`;
@@ -1345,7 +1360,6 @@
                 });
                 adminFilter.innerHTML = filterHtml;
 
-                // Induk dapat memilih menginput untuk diri sendiri atau unit binaannya
                 skpdInput.value = currentUser.nama_skpd;
                 skpdHidden.value = currentUser.nama_skpd;
                 skpdInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
@@ -1364,7 +1378,7 @@
             }
         }
 
-        // 8. MODAL SKPD
+        // 9. MODAL SKPD
         function openSkpdModal() {
             const isAdmin = (currentUser.kategori === "Admin");
             const isInduk = (childUnitsList && childUnitsList.length > 0);
@@ -1427,7 +1441,7 @@
             closeSkpdModal();
         }
 
-        // 9. SWITCH TAB DOKUMEN
+        // 10. SWITCH TAB DOKUMEN
         function switchMode(tabName) {
             currentTab = tabName;
             const isRk = (tabName === "RKBMD");
@@ -1452,7 +1466,7 @@
             renderTables();
         }
 
-        // 10. KALKULASI & VALIDASI
+        // 11. KALKULASI & VALIDASI
         function calcKebutuhanRiil() {
             const maks = parseInt(document.getElementById('kebutuhanMaksimum').value) || 0;
             const opt = parseInt(document.getElementById('optimalisasi').value) || 0;
@@ -1533,7 +1547,7 @@
             return true;
         }
 
-        // 11. SUBMIT DATA
+        // 12. SUBMIT DATA
         async function handleFormSubmit(e) {
             e.preventDefault();
             if (!validateInputLock()) return;
@@ -1721,7 +1735,7 @@
             validateInputLock();
         }
 
-        // 12. FILTER & TABEL DAFTAR USULAN
+        // 13. FILTER & TABEL DAFTAR USULAN
         function resetPageAndRender() {
             currentPage = 1;
             renderTables();
@@ -1840,7 +1854,7 @@
             if (currentPage < totalPages) { currentPage++; renderTables(); }
         }
 
-        // 13. MASTER BARANG MODAL
+        // 14. MASTER BARANG MODAL
         function openBarangModal() {
             document.getElementById('barangModal').classList.remove('hidden');
             document.getElementById('searchBarangModalInput').value = "";
@@ -1880,7 +1894,9 @@
             closeBarangModal();
         }
 
-        // 14. MONITORING KEPATUHAN & DIAGRAM DONUT (6 KATEGORI PENUH)
+        // =================================================================
+        // 15. MONITORING KEPATUHAN & DIAGRAM DONUT GLOBAL (POIN 1)
+        // =================================================================
         function renderAllViews() {
             renderTables();
             updateStats();
@@ -1898,57 +1914,69 @@
             document.getElementById('statMasterInfo').innerText = `${masterSkpdList.length} Unit / ${masterBarangList.length} Barang`;
         }
 
+        // Perhitungan 6 Metrik Kepatuhan Global Se-Kabupaten Konawe
         function getCompliance() {
-            const usageTotal = {};
-            const usagePengadaan = {};
-            const usagePemeliharaan = {};
+            let list = complianceReportData;
+            
+            // Fallback jika belum terisi dari backend
+            if (!list || list.length === 0) {
+                list = masterSkpdList.map(s => ({
+                    nama: s.nama,
+                    kategori: s.kategori || "Dinas & Badan",
+                    skpdInduk: s.skpdInduk || "-",
+                    submitted: false,
+                    totalUsulan: 0,
+                    totalRkbmd: 0,
+                    totalRkpbm: 0,
+                    countPengadaan: 0,
+                    countPemeliharaan: 0,
+                    statusKepatuhan: "Belum Input"
+                }));
+            }
 
-            dataset.forEach(i => {
-                if (i.skpd) {
-                    const k = i.skpd.toLowerCase();
-                    usageTotal[k] = (usageTotal[k] || 0) + 1;
-                    if (i.jenis === "RKBMD") usagePengadaan[k] = (usagePengadaan[k] || 0) + 1;
-                    else if (i.jenis === "RKPBMD") usagePemeliharaan[k] = (usagePemeliharaan[k] || 0) + 1;
-                }
-            });
-
-            const list = masterSkpdList.map(s => {
-                const k = s.nama.toLowerCase();
-                const countTotal = usageTotal[k] || 0;
+            // Normalisasi penempatan 6 kategori utama (Badan & Dinas, Kecamatan, Puskesmas, Kelurahan, Bagian Setda)
+            const normalized = list.map(s => {
                 let kat = s.kategori || "Dinas & Badan";
                 const upper = s.nama.toUpperCase();
+                const katUpper = kat.toUpperCase();
 
-                if (upper.includes("PUSKESMAS") || upper.startsWith("PKM") || kat.toUpperCase() === "PUSKESMAS") {
+                if (upper.includes("PUSKESMAS") || upper.startsWith("PKM") || katUpper === "PUSKESMAS") {
                     kat = "Puskesmas";
-                } else if (upper.includes("KELURAHAN") || upper.startsWith("KEL.") || kat.toUpperCase() === "KELURAHAN") {
+                } else if (upper.includes("KELURAHAN") || upper.startsWith("KEL.") || katUpper === "KELURAHAN") {
                     kat = "Kelurahan";
-                } else if (upper.includes("KECAMATAN") || upper.startsWith("KEC.") || kat.toUpperCase() === "KECAMATAN") {
+                } else if (upper.includes("KECAMATAN") || upper.startsWith("KEC.") || katUpper === "KECAMATAN") {
                     kat = "Kecamatan";
-                } else if (upper.includes("BAGIAN") || upper.includes("SETDA") || kat.toUpperCase() === "BAGIAN") {
+                } else if (upper.includes("BAGIAN") || upper.includes("SETDA") || katUpper === "BAGIAN") {
                     kat = "Bagian";
                 } else {
                     kat = "Dinas & Badan";
                 }
 
+                const countRk = s.totalRkbmd !== undefined ? s.totalRkbmd : (s.countPengadaan || 0);
+                const countRkp = s.totalRkpbm !== undefined ? s.totalRkpbm : (s.countPemeliharaan || 0);
+                const countTot = s.totalUsulan !== undefined ? s.totalUsulan : (s.count || 0);
+                const isSub = s.submitted !== undefined ? s.submitted : (countTot > 0);
+
                 return {
                     nama: s.nama,
                     kategori: kat,
                     skpdInduk: s.skpdInduk || "-",
-                    submitted: countTotal > 0,
-                    count: countTotal,
-                    countPengadaan: usagePengadaan[k] || 0,
-                    countPemeliharaan: usagePemeliharaan[k] || 0
+                    submitted: isSub,
+                    count: countTot,
+                    countPengadaan: countRk,
+                    countPemeliharaan: countRkp,
+                    statusKepatuhan: s.statusKepatuhan || (countTot > 0 ? "Sudah Input" : "Belum Input")
                 };
             });
 
-            const dinas = list.filter(s => s.kategori === "Dinas & Badan");
-            const kec = list.filter(s => s.kategori === "Kecamatan");
-            const pkm = list.filter(s => s.kategori === "Puskesmas");
-            const kel = list.filter(s => s.kategori === "Kelurahan");
-            const bagian = list.filter(s => s.kategori === "Bagian");
+            const dinas = normalized.filter(s => s.kategori === "Dinas & Badan");
+            const kec = normalized.filter(s => s.kategori === "Kecamatan");
+            const pkm = normalized.filter(s => s.kategori === "Puskesmas");
+            const kel = normalized.filter(s => s.kategori === "Kelurahan");
+            const bagian = normalized.filter(s => s.kategori === "Bagian");
 
             return {
-                all: list,
+                all: normalized,
                 dinasSudah: dinas.filter(s => s.submitted).length,
                 dinasTotal: dinas.length,
                 kecSudah: kec.filter(s => s.submitted).length,
@@ -1959,15 +1987,16 @@
                 kelTotal: kel.length,
                 bagianSudah: bagian.filter(s => s.submitted).length,
                 bagianTotal: bagian.length,
-                totalSudah: list.filter(s => s.submitted).length,
-                totalBelum: list.filter(s => !s.submitted).length,
-                totalSemua: list.length
+                totalSudah: normalized.filter(s => s.submitted).length,
+                totalBelum: normalized.filter(s => !s.submitted).length,
+                totalSemua: normalized.length
             };
         }
 
         function updateComplianceDonut() {
             const c = getCompliance();
 
+            // 6 Kartu Metrik Kepatuhan Global
             document.getElementById('metricDinasSudah').innerText = c.dinasSudah;
             document.getElementById('metricDinasTotal').innerText = `/ ${c.dinasTotal}`;
             document.getElementById('metricDinasPercent').innerText = `${c.dinasTotal ? Math.round((c.dinasSudah / c.dinasTotal) * 100) : 0}% Selesai`;
@@ -2046,7 +2075,7 @@
             }
         }
 
-        // 15. MODAL DETAIL KEPATUHAN & KARTU KENDALI
+        // 16. MODAL RINCIAN KEPATUHAN & KARTU KENDALI
         function openSkpdDetailsModal(filter = "SEMUA") {
             modalActiveFilter = filter;
             const c = getCompliance();
@@ -2211,7 +2240,7 @@
             setTimeout(() => { window.print(); }, 250);
         }
 
-        // 16. MODAL CETAK RESMI FORMAT PERMENDAGRI (DILENGKAPI HIERARKI REKAP INDUK)
+        // 17. CETAK RESMI FORMAT PERMENDAGRI
         function openPrintConfigModal() {
             const modal = document.getElementById('printConfigModal');
             const targetSelect = document.getElementById('printTargetSkpd');
@@ -2506,7 +2535,7 @@
             setTimeout(() => { window.print(); }, 300);
         }
 
-        // 17. UTILITAS GLOBAL
+        // 18. UTILITAS GLOBAL
         function showLoader(txt) {
             document.getElementById('globalLoaderMsg').innerText = txt;
             document.getElementById('globalLoader').classList.remove('hidden');
