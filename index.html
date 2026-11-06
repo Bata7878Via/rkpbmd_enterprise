@@ -22,14 +22,42 @@
     <title>Sistem Terpadu RKBMD &amp; RKPBMD Kab. Konawe TA. 2027</title>
     <meta name="theme-color" content="#1e3a8a">
 
-    <!-- 1. PROTEKSI ANTI GOOGLE BOT & SEARCH ENGINE CRAWLER -->
-    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+    <!-- ======================================================== -->
+    <!-- [SHIELD] ANTI GOOGLE BOT, CRAWLER, & SEARCH ENGINE TRAP   -->
+    <!-- ======================================================== -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, max-image-preview:none">
     <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet">
+    <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive">
     <meta name="slurp" content="noindex, nofollow">
     <meta name="duckduckbot" content="noindex, nofollow">
     <meta name="baiduspider" content="noindex, nofollow">
     <meta name="yandexbot" content="noindex, nofollow">
+
+    <script>
+        (function() {
+            // 1. Deteksi automation headless driver (Puppeteer, Selenium, PhantomJS)
+            const isHeadless = navigator.webdriver || 
+                               window._phantom || 
+                               window.__nightmare || 
+                               navigator.userAgent.indexOf("HeadlessChrome") !== -1;
+
+            // 2. Deteksi crawler bot Google & mesin perayap populer
+            const botList = ["googlebot", "bingbot", "yandexbot", "duckduckbot", "baiduspider", "slurp", "ia_archiver"];
+            const currentUa = (navigator.userAgent || "").toLowerCase();
+            const isBot = botList.some(bot => currentUa.indexOf(bot) !== -1);
+
+            // Jika terdeteksi perayap otomatis, hancurkan rendering DOM
+            if (isHeadless || isBot) {
+                window.stop();
+                if (document.documentElement) {
+                    document.documentElement.innerHTML = "";
+                }
+                window.location.replace("about:blank");
+            }
+        })();
+    </script>
+    <!-- ======================================================== -->
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,26 +69,18 @@
     <style>
         body { 
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent; 
         }
         .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
         
-        /* Proteksi Seleksi Teks & Klik */
-        body, label, th, h1, h2, h3, .donut-segment, .card-box {
+        .select-none, label, th, h1, h2, h3, .donut-segment, .card-box {
             user-select: none !important;
             -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
             cursor: default;
         }
         .cursor-pointer, button, [onclick] {
             cursor: pointer !important;
-        }
-        input, textarea {
-            user-select: text !important;
-            -webkit-user-select: text !important;
         }
         input[readonly], textarea[readonly] {
             caret-color: transparent !important;
@@ -208,8 +228,7 @@
                 </button>
             </div>
 
-            <!-- PERINGATAN LISENSI RESMI DI LAYAR LOGIN -->
-            <div class="mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-500 font-semibold select-none">
+            <div class="mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-400 font-medium select-none">
                 &copy;Copyright 2026 Irman_Aset. All rights reserved
             </div>
         </div>
@@ -243,7 +262,7 @@
             </div>
         </header>
 
-        <!-- KARTU STATISTIK -->
+        <!-- KARTU STATISTIK (4 KOTAK ASLI) -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 select-none">
             <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm card-box">
                 <span class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Total Usulan Masuk</span>
@@ -269,7 +288,7 @@
             </div>
         </div>
 
-        <!-- AGENDA & JADWAL BATAS WAKTU PELAPORAN -->
+        <!-- 1. AGENDA & JADWAL BATAS WAKTU PELAPORAN (3 WARNA STATUS & JAM LENGKAP) -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 select-none">
             <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
                 <div class="flex items-center gap-2">
@@ -280,12 +299,13 @@
                 </div>
                 <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800">T.A. 2027</span>
             </div>
+            <!-- Wadah kartu agenda diisi dinamis dari spreadsheet -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs" id="agendaTimelineContainer">
                 <div class="p-4 text-center text-slate-400 italic col-span-full">Memuat jadwal agenda dari database...</div>
             </div>
         </div>
 
-        <!-- NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN -->
+        <!-- 2. NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN (RESPONSIF TOTAL DI HP ANDROID & LAPTOP) -->
         <div id="agendaUserCountdownBox" class="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white p-3 sm:p-4 rounded-2xl shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-3 select-none w-full max-w-full overflow-hidden">
             <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0 w-full md:w-auto flex-1">
                 <div class="p-2 sm:p-2.5 bg-amber-400 text-slate-950 rounded-xl text-base sm:text-lg font-black shrink-0 mt-0.5 sm:mt-0">
@@ -325,7 +345,7 @@
             </div>
         </div>
 
-        <!-- MONITORING KEPATUHAN PENGINPUTAN -->
+        <!-- 3. MONITORING KEPATUHAN PENGINPUTAN (6 METRIK GLOBAL & 2 DONUT INTERAKTIF) -->
         <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
                 <div>
@@ -653,7 +673,7 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2 min-w-0 select-none">
-                    <!-- FILTER SKPD -->
+                    <!-- FILTER HIERARKI KECAMATAN / DINKES / ADMIN -->
                     <div id="adminSkpdFilterWrapper" class="hidden w-full sm:w-auto min-w-0">
                         <select id="adminSkpdFilter" onchange="resetPageAndRender()" class="w-full sm:w-56 max-w-full bg-amber-50 border border-amber-300 rounded-xl px-2.5 py-1.5 text-xs font-bold text-amber-900 focus:outline-none truncate">
                             <option value="SEMUA">-- Semua Unit --</option>
@@ -729,7 +749,6 @@
             <!-- KONTROL PAGINASI -->
             <div class="pt-3 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-2 select-none">
                 <span id="labelTotalRecords">0 data ditampilkan</span>
-                <!-- PERINGATAN LISENSI RESMI DI FOOTER DASHBOARD -->
                 <span class="font-semibold text-slate-500 text-center order-last md:order-none">&copy;Copyright 2026 Irman_Aset. All rights reserved</span>
                 <div class="flex items-center gap-1.5" id="paginationControls">
                     <button type="button" onclick="prevPage()" id="btnPrevPage" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg font-bold disabled:opacity-40 disabled:cursor-not-allowed">
@@ -866,7 +885,7 @@
         </div>
     </div>
 
-    <!-- MODAL CETAK BERTINGKAT KHUSUS KECAMATAN & DINKES -->
+    <!-- MODAL PARAMETER TANDA TANGAN & CETAK (HANYA PENGGUNA BARANG) -->
     <div id="printConfigModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 z-50 hidden select-none overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-100 max-h-[92vh] flex flex-col my-auto">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
@@ -874,37 +893,29 @@
                     <h3 class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
                         <i class="fa-solid fa-file-invoice text-indigo-600"></i> Pengaturan Cetak Permendagri No. 61/2023
                     </h3>
-                    <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Lengkapi data pejabat penandatangan sebelum mencetak.</p>
+                    <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Lengk data pejabat penandatangan sebelum mencetak.</p>
                 </div>
                 <button type="button" onclick="closePrintConfigModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold cursor-pointer leading-none">&times;</button>
             </div>
 
             <form id="formPrintConfig" onsubmit="executeOfficialPrint(event)" class="space-y-3 mt-3 text-xs overflow-y-auto custom-scroll pr-1 flex-1">
-                <!-- Dropdown Tingkat 1 -->
                 <div>
-                    <label class="block font-bold text-slate-700 uppercase mb-1">Unit SKPD yang Dicetak</label>
-                    <select id="printTargetSkpd" onchange="handlePrintTargetChange()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-1.5 font-bold text-slate-800 focus:outline-none" required></select>
+                    <label class="block font-bold text-slate-700 uppercase mb-1">Unit yang Dicetak</label>
+                    <select id="printTargetSkpd" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-1.5 font-bold text-slate-800 focus:outline-none" required></select>
                 </div>
-
-                <!-- Dropdown Tingkat 2 (Dinamis Bertingkat Khusus Kecamatan & Dinkes, Bersih Tanpa (+kelurahan)) -->
-                <div id="printSubUnitWrapper" class="hidden p-2.5 bg-indigo-50/70 border border-indigo-200 rounded-xl">
-                    <label id="printSubUnitLabel" class="block font-bold text-indigo-900 uppercase mb-1">Pilihan Tingkat Cetak</label>
-                    <select id="printSubUnitSelect" onchange="handleSubUnitChange()" class="w-full bg-white border border-indigo-300 rounded-lg px-2.5 py-1.5 font-semibold text-slate-800 focus:outline-none"></select>
-                </div>
-
                 <div>
                     <label class="block font-bold text-slate-700 uppercase mb-1">Tempat &amp; Tanggal Dokumen</label>
                     <input type="text" id="printTanggalDokumen" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-1.5 font-semibold text-slate-800 focus:outline-none" required>
                 </div>
 
-                <!-- Penandatangan Resmi -->
+                <!-- Bagian Pengguna Barang / Kuasa Pengguna Barang (Satu-satunya Penandatangan) -->
                 <div class="p-3 bg-indigo-50/60 border border-indigo-200 rounded-2xl space-y-2">
                     <span class="font-bold text-indigo-900 flex items-center gap-1.5 uppercase text-[10px]">
                         <i class="fa-solid fa-user-tie text-indigo-600"></i> Pengguna Barang / Kuasa Pengguna Barang
                     </span>
                     <div>
                         <label class="block text-[10px] text-slate-600 font-semibold mb-0.5">Sebutan Jabatan</label>
-                        <input type="text" id="printKadisJabatan" placeholder="Kepala Dinas/Camat/Lurah/Kepala Puskesmas..." class="w-full bg-white border border-slate-300 rounded-lg px-2 py-1.5 font-medium" required>
+                        <input type="text" id="printKadisJabatan" placeholder="Kepala Dinas/Camat..." class="w-full bg-white border border-slate-300 rounded-lg px-2 py-1.5 font-medium" required>
                     </div>
                     <div>
                         <label class="block text-[10px] text-slate-600 font-semibold mb-0.5">Nama Lengkap &amp; Gelar</label>
@@ -928,102 +939,15 @@
         </div>
     </div>
 
-    <!-- ELEMEN CETAK DOKUMEN RESMI (HANYA MUNCUL SAAT PRINT) -->
+    <!-- ELEMEN CETAK DOKUMEN RESMI (HANYA MUNCUL DI PRINT) -->
     <div id="printable-doc" class="hidden"></div>
 
-    <!-- ================= JAVASCRIPT PROTEKSI & LOGIKA KLIEN ================= -->
+    <!-- ================= JAVASCRIPT LOGIKA KLIEN ================= -->
     <script>
-        /**
-         * =========================================================================================
-         * SISTEM INFORMASI PERENCANAAN E-RKBMD & RKPBMD KABUPATEN KONAWE TA. 2027
-         * Hak Cipta (C) 2026 IRMAN. Hak Cipta Dilindungi Undang-Undang.
-         * =========================================================================================
-         */
-
-        // 1. ENGINE ANTI GOOGLE BOT (CLIENT-SIDE DETECTOR)
-        (function() {
-            var ua = (navigator.userAgent || '').toLowerCase();
-            var bots = ['googlebot', 'bingbot', 'yandexbot', 'slurp', 'duckduckbot', 'baiduspider', 'crawler', 'spider', 'robot', 'headlesschrome'];
-            for (var i = 0; i < bots.length; i++) {
-                if (ua.indexOf(bots[i]) !== -1) {
-                    window.location.replace("about:blank");
-                    document.documentElement.innerHTML = "";
-                    break;
-                }
-            }
-        })();
-
-        // 2 & 3. ENGINE ANTI-COPY, ANTI-INSPECT, ANTI-DEBUGGER TRAP & LISENSI
-        (function() {
-            'use strict';
-
-            console.log("%c PERINGATAN HAK CIPTA %c", "background: #b91c1c; color: white; font-size: 16px; font-weight: bold; padding: 4px 8px; border-radius: 4px;", "");
-            console.log("%c Hak Cipta (C) 2026 IRMAN. Hak Cipta Dilindungi Undang-Undang.\nDilarang keras menyalin, menginspeksi, atau merekayasa sistem ini tanpa izin tertulis resmi.", "color: #1e3a8a; font-weight: bold; font-size: 12px;");
-
-            // Matikan Klik Kanan
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                return false;
-            }, { capture: true });
-
-            // Blokir Shortcut DevTools & View Source
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'F12' || e.keyCode === 123) {
-                    e.preventDefault();
-                    return false;
-                }
-                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
-                    e.preventDefault();
-                    return false;
-                }
-                if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 's')) {
-                    e.preventDefault();
-                    return false;
-                }
-            }, { capture: true });
-
-            // Cegah Drag & Seleksi Dokumen
-            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
-            document.addEventListener('selectstart', function(e) {
-                var tag = e.target.tagName ? e.target.tagName.toLowerCase() : '';
-                if (tag !== 'input' && tag !== 'textarea') {
-                    e.preventDefault();
-                }
-            });
-
-            // Anti-Debugger Timing Trap (Membekukan browser jika Inspect Element dipaksa dibuka)
-            setInterval(function() {
-                var start = performance.now();
-                (function() {}['constructor']('debugger')());
-                if (performance.now() - start > 100) {
-                    document.body.innerHTML = '<div style="background:#0f172a;color:#ef4444;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:20px;">' +
-                        '<h1 style="font-size:24px;font-weight:900;margin-bottom:10px;">PELANGGARAN AKSES SISTEM DETEKSI</h1>' +
-                        '<p style="font-size:14px;color:#cbd5e1;max-width:500px;">Aktivitas Developer Tools / Inspect Element terdeteksi. Akses ditutup demi integritas database Pemerintah Kabupaten Konawe.</p>' +
-                        '<p style="font-size:12px;color:#94a3b8;margin-top:20px;">Hak Cipta (C) 2026 IRMAN. Hak Cipta Dilindungi Undang-Undang.</p>' +
-                        '</div>';
-                }
-            }, 1000);
-        })();
-
-        // 4. SANITASI OUTPUT HTML (MENCEGAH STORED XSS)
-        function escapeHtml(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-
-        // =================================================================
-        // 5. MODUL INTI LOGIKA SISTEM (TERINTEGRASI DAN TERLINDUNGI)
-        // =================================================================
-        
-        // PENGACAKAN STRING ARRAY UNTUK ROUTE & ENDPOINT (CODE OBFUSCATION)
-        var _0xsec = ["\x63\x75\x73\x74\x6f\x6d\x5f\x72\x6b\x62\x6d\x64\x5f\x75\x72\x6c", "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x73\x63\x72\x69\x70\x74\x2e\x67\x6f\x6f\x67\x6c\x65\x2e\x63\x6f\x6d\x2f\x6d\x61\x63\x72\x6f\x73\x2f\x73\x2f\x41\x4b\x66\x79\x63\x62\x77\x76\x45\x48\x61\x69\x67\x39\x73\x55\x63\x47\x6a\x49\x35\x41\x47\x56\x36\x37\x73\x43\x62\x6c\x61\x78\x74\x4d\x66\x7a\x46\x54\x51\x49\x32\x6e\x70\x31\x53\x78\x36\x74\x47\x55\x62\x70\x68\x65\x45\x48\x4f\x6d\x32\x6a\x6e\x36\x2d\x59\x74\x72\x62\x67\x56\x53\x56\x38\x2f\x65\x78\x65\x63"];
-        var DEFAULT_API_URL = _0xsec[1];
-        var API_URL = localStorage.getItem(_0xsec[0]) || DEFAULT_API_URL;
+        // String Obfuscation Engine: Mengamankan endpoint dari crawler plaintext
+        const _0xSec = ["aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3dkVIYWlnOXNVY0dqSTVBR1Z2NnNDYmxheHRNZnpGVFFJMm5wMVN4NnRHVWJwaGVFSE9tMmpuNi1ZdHJiZ1ZTVjgvZXhlYw=="];
+        const DEFAULT_API_URL = decodeURIComponent(escape(window.atob(_0xSec[0])));
+        let API_URL = localStorage.getItem('custom_rkbmd_url') || DEFAULT_API_URL;
 
         let currentUser = null;
         let authToken = null;
@@ -1267,7 +1191,7 @@
             switchMode('RKBMD');
         }
 
-        // 5. FETCH DATA DARI DATABASE
+        // 5. FETCH DATA, AGENDA, & KARTU KENDALI DARI SPREADSHEET
         async function fetchDataFromDatabase() {
             showLoader("Menghubungkan ke Database...");
             try {
@@ -1295,8 +1219,13 @@
 
                     populateSkpdSelect();
                     renderAllViews();
+                    
+                    // Render 4 Kartu Agenda Dinamis dari Spreadsheet
                     renderAgendaTimeline(agendaList);
+                    
+                    // Jalankan Mesin Countdown Jam Mundur Real-Time
                     initUserCountdown(res.activeAgenda);
+                    
                     hideConnectionError();
                 } else if (res.status === "unauthorized") {
                     showSystemDialog({
@@ -1316,7 +1245,9 @@
             }
         }
 
-        // 6. RENDER AGENDA DINAMIS
+        // =================================================================
+        // 6. RENDER KARTU AGENDA DINAMIS (3 WARNA STATUS & JAM LENGKAP)
+        // =================================================================
         function renderAgendaTimeline(list) {
             const container = document.getElementById('agendaTimelineContainer');
             if (!container) return;
@@ -1328,6 +1259,8 @@
 
             container.innerHTML = list.map((a) => {
                 const statusStr = (a.statusPelaksanaan || "").toLowerCase();
+                
+                // STANDARISASI HANYA 3 STATUS & 3 WARNA SAJA
                 let statusLabel = "SEDANG BERJALAN";
                 let theme = {
                     cardBg: "bg-emerald-50/70",
@@ -1360,25 +1293,28 @@
                     };
                 }
 
+                // Bagian Jam ditampilkan lengkap tanpa truncate (tidak terpotong di HP/Laptop)
                 return `
                     <div class="p-3 ${theme.cardBg} border ${theme.border} rounded-xl flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-center ${theme.headerText} font-black text-[10px] uppercase gap-1">
-                                <span class="truncate">${escapeHtml(a.tahap)}: ${escapeHtml(a.sasaranUnit)}</span>
+                                <span class="truncate">${a.tahap}: ${a.sasaranUnit}</span>
                                 <span class="px-2 py-0.5 rounded ${theme.badgeBg} text-[9px] font-black shrink-0 tracking-wider">${statusLabel}</span>
                             </div>
-                            <p class="text-slate-700 font-semibold text-[11px] mt-1 line-clamp-2">${escapeHtml(a.namaKegiatan)}</p>
+                            <p class="text-slate-700 font-semibold text-[11px] mt-1 line-clamp-2">${a.namaKegiatan}</p>
                         </div>
                         <div class="mt-2.5 pt-2 border-t ${theme.border} flex flex-wrap justify-between items-center gap-1 text-[10px]">
                             <span class="text-slate-500 font-medium shrink-0">Batas Waktu:</span>
-                            <span class="font-bold ${theme.dateText} bg-white px-2 py-0.5 rounded border ${theme.dateBorder} text-[10px] break-words text-right flex-1 sm:flex-none whitespace-normal leading-tight">${escapeHtml(a.batasAkhir)}</span>
+                            <span class="font-bold ${theme.dateText} bg-white px-2 py-0.5 rounded border ${theme.dateBorder} text-[10px] break-words text-right flex-1 sm:flex-none whitespace-normal leading-tight">${a.batasAkhir}</span>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // 7. COUNTDOWN JAM MUNDUR REALTIME
+        // =================================================================
+        // 7. MESIN COUNTDOWN JAM MUNDUR (RESPONSIF DI HP & 3 WARNA STATUS)
+        // =================================================================
         function initUserCountdown(activeAgenda) {
             if (countdownTimer) clearInterval(countdownTimer);
 
@@ -1393,6 +1329,7 @@
                 titleEl.innerText = activeAgenda.namaKegiatan || `Batas Penginputan: ${currentUser.nama_skpd}`;
                 deadlineText.innerText = `Batas Akhir: ${activeAgenda.batasAkhir}`;
                 
+                // Status sinkron 3 warna
                 const stLower = (activeAgenda.statusPelaksanaan || "").toLowerCase();
                 if (activeAgenda.isExpired || stLower.includes("berakhir")) {
                     tahapTag.innerText = "BERAKHIR";
@@ -1404,6 +1341,7 @@
                     tahapTag.innerText = "SEDANG BERJALAN";
                     tahapTag.className = "text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-600 text-white shrink-0 tracking-wider";
                 }
+
             } else if (activeAgenda && activeAgenda.sisaWaktuMs > 0) {
                 targetTime = Date.now() + activeAgenda.sisaWaktuMs;
                 titleEl.innerText = activeAgenda.namaKegiatan || `Batas Penginputan: ${currentUser.nama_skpd}`;
@@ -1464,9 +1402,7 @@
             if (isAdmin) {
                 adminFilterWrapper.classList.remove('hidden');
                 let filterHtml = `<option value="SEMUA">-- Semua SKPD (Admin) --</option>`;
-                masterSkpdList.forEach(s => { 
-                    filterHtml += `<option value="${escapeHtml(s.nama)}">${escapeHtml(s.nama)}</option>`; 
-                });
+                masterSkpdList.forEach(s => { filterHtml += `<option value="${s.nama}">${s.nama}</option>`; });
                 adminFilter.innerHTML = filterHtml;
 
                 skpdInput.value = "";
@@ -1479,10 +1415,10 @@
 
             } else if (isInduk) {
                 adminFilterWrapper.classList.remove('hidden');
-                let filterHtml = `<option value="SEMUA">-- Rekap Gabungan (${escapeHtml(currentUser.nama_skpd)}) --</option>`;
-                filterHtml += `<option value="${escapeHtml(currentUser.nama_skpd)}">${escapeHtml(currentUser.nama_skpd)} (Induk Sendiri)</option>`;
+                let filterHtml = `<option value="SEMUA">-- Rekap Gabungan (${currentUser.nama_skpd}) --</option>`;
+                filterHtml += `<option value="${currentUser.nama_skpd}">${currentUser.nama_skpd} (Induk Sendiri)</option>`;
                 childUnitsList.forEach(child => {
-                    filterHtml += `<option value="${escapeHtml(child)}">${escapeHtml(child)}</option>`;
+                    filterHtml += `<option value="${child}">${child}</option>`;
                 });
                 adminFilter.innerHTML = filterHtml;
 
@@ -1551,10 +1487,10 @@
                 return;
             }
             ul.innerHTML = list.map(s => `
-                <li onclick="selectSkpd('${escapeHtml(s.nama)}')" class="p-2.5 hover:bg-indigo-50 rounded-xl cursor-pointer flex justify-between items-center transition">
+                <li onclick="selectSkpd('${s.nama}')" class="p-2.5 hover:bg-indigo-50 rounded-xl cursor-pointer flex justify-between items-center transition">
                     <div>
-                        <div class="font-bold text-slate-800">${escapeHtml(s.nama)}</div>
-                        <div class="text-[10px] text-slate-400 font-medium">${escapeHtml(s.kategori)} ${s.skpdInduk ? '&bull; Induk: ' + escapeHtml(s.skpdInduk) : ''}</div>
+                        <div class="font-bold text-slate-800">${s.nama}</div>
+                        <div class="text-[10px] text-slate-400 font-medium">${s.kategori} ${s.skpdInduk ? '&bull; Induk: ' + s.skpdInduk : ''}</div>
                     </div>
                     <i class="fa-solid fa-plus text-indigo-600 text-xs"></i>
                 </li>
@@ -1919,19 +1855,19 @@
                     tbodyRk.innerHTML = paginatedData.map((it, idx) => `
                         <tr class="hover:bg-indigo-50/50 transition border-b border-slate-100 text-[11px]">
                             <td class="p-2.5 text-center text-slate-400 font-mono">${startIndex + idx + 1}</td>
-                            <td class="p-2.5 font-bold text-slate-800">${escapeHtml(it.skpd)}</td>
-                            <td class="p-2.5 font-medium text-slate-700">${escapeHtml(it.programKegiatanOutput)}</td>
-                            <td class="p-2.5 font-mono text-[10px] text-slate-500">${escapeHtml(it.kodeBarang || '-')}</td>
-                            <td class="p-2.5 font-bold text-indigo-950">${escapeHtml(it.namaBarang)}</td>
+                            <td class="p-2.5 font-bold text-slate-800">${it.skpd}</td>
+                            <td class="p-2.5 font-medium text-slate-700">${it.programKegiatanOutput}</td>
+                            <td class="p-2.5 font-mono text-[10px] text-slate-500">${it.kodeBarang || '-'}</td>
+                            <td class="p-2.5 font-bold text-indigo-950">${it.namaBarang}</td>
                             <td class="p-2.5 text-center font-black text-indigo-700">${it.jumlahUsulan}</td>
-                            <td class="p-2.5 text-center">${escapeHtml(it.satuan)}</td>
+                            <td class="p-2.5 text-center">${it.satuan}</td>
                             <td class="p-2.5 text-center font-semibold">${it.kebutuhanMaksimum || 0}</td>
                             <td class="p-2.5 text-center font-semibold">${it.optimalisasi || 0}</td>
                             <td class="p-2.5 text-center font-black bg-amber-50 text-amber-900">${it.kebutuhanRiil || 0}</td>
-                            <td class="p-2.5 text-slate-500">${escapeHtml(it.keterangan || '-')}</td>
+                            <td class="p-2.5 text-slate-500">${it.keterangan || '-'}</td>
                             <td class="p-2.5 text-center space-x-1 no-print">
-                                <button onclick="editItem('${escapeHtml(it.id)}')" class="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-lg cursor-pointer" title="Ubah Usulan"><i class="fa-solid fa-pencil"></i></button>
-                                <button onclick="deleteItem('${escapeHtml(it.id)}')" class="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg cursor-pointer" title="Hapus Usulan"><i class="fa-solid fa-trash-can"></i></button>
+                                <button onclick="editItem('${it.id}')" class="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-lg cursor-pointer" title="Ubah Usulan"><i class="fa-solid fa-pencil"></i></button>
+                                <button onclick="deleteItem('${it.id}')" class="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg cursor-pointer" title="Hapus Usulan"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                     `).join('');
@@ -1944,20 +1880,20 @@
                     tbodyRkp.innerHTML = paginatedData.map((it, idx) => `
                         <tr class="hover:bg-amber-50/50 transition border-b border-slate-100 text-[11px]">
                             <td class="p-2.5 text-center text-slate-400 font-mono">${startIndex + idx + 1}</td>
-                            <td class="p-2.5 font-bold text-slate-800">${escapeHtml(it.skpd)}</td>
-                            <td class="p-2.5 font-medium text-slate-700">${escapeHtml(it.programKegiatanOutput)}</td>
-                            <td class="p-2.5 font-mono text-[10px] text-slate-500">${escapeHtml(it.kodeBarang || '-')}</td>
-                            <td class="p-2.5 font-bold text-amber-950">${escapeHtml(it.namaBarang)}</td>
+                            <td class="p-2.5 font-bold text-slate-800">${it.skpd}</td>
+                            <td class="p-2.5 font-medium text-slate-700">${it.programKegiatanOutput}</td>
+                            <td class="p-2.5 font-mono text-[10px] text-slate-500">${it.kodeBarang || '-'}</td>
+                            <td class="p-2.5 font-bold text-amber-950">${it.namaBarang}</td>
                             <td class="p-2.5 text-center font-semibold">${it.jumlahKib || it.jumlahUsulan}</td>
-                            <td class="p-2.5 text-center">${escapeHtml(it.satuan)}</td>
-                            <td class="p-2.5 text-slate-600">${escapeHtml(it.statusBarang)}</td>
-                            <td class="p-2.5 text-center font-bold ${it.kondisiBarang === 'Baik' ? 'text-emerald-600' : 'text-amber-600'}">${escapeHtml(it.kondisiBarang)}</td>
-                            <td class="p-2.5 font-bold text-amber-800">${escapeHtml(it.namaPemeliharaan || '-')}</td>
+                            <td class="p-2.5 text-center">${it.satuan}</td>
+                            <td class="p-2.5 text-slate-600">${it.statusBarang}</td>
+                            <td class="p-2.5 text-center font-bold ${it.kondisiBarang === 'Baik' ? 'text-emerald-600' : 'text-amber-600'}">${it.kondisiBarang}</td>
+                            <td class="p-2.5 font-bold text-amber-800">${it.namaPemeliharaan || '-'}</td>
                             <td class="p-2.5 text-center font-black bg-emerald-50 text-emerald-800">${it.jumlahUsulan}</td>
-                            <td class="p-2.5 text-slate-500">${escapeHtml(it.keterangan || '-')}</td>
+                            <td class="p-2.5 text-slate-500">${it.keterangan || '-'}</td>
                             <td class="p-2.5 text-center space-x-1 no-print">
-                                <button onclick="editItem('${escapeHtml(it.id)}')" class="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-lg cursor-pointer" title="Ubah Usulan"><i class="fa-solid fa-pencil"></i></button>
-                                <button onclick="deleteItem('${escapeHtml(it.id)}')" class="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg cursor-pointer" title="Hapus Usulan"><i class="fa-solid fa-trash-can"></i></button>
+                                <button onclick="editItem('${it.id}')" class="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-lg cursor-pointer" title="Ubah Usulan"><i class="fa-solid fa-pencil"></i></button>
+                                <button onclick="deleteItem('${it.id}')" class="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg cursor-pointer" title="Hapus Usulan"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                     `).join('');
@@ -2004,10 +1940,10 @@
                 return;
             }
             ul.innerHTML = list.map(b => `
-                <li onclick="selectBarang('${escapeHtml(b.kode)}', '${escapeHtml(b.nama)}')" class="p-2.5 hover:bg-blue-50 rounded-xl cursor-pointer flex justify-between items-center transition">
+                <li onclick="selectBarang('${b.kode}', '${b.nama}')" class="p-2.5 hover:bg-blue-50 rounded-xl cursor-pointer flex justify-between items-center transition">
                     <div>
-                        <div class="font-bold text-slate-800">${escapeHtml(b.nama)}</div>
-                        <div class="text-[10px] text-slate-400 font-mono">${escapeHtml(b.kode)}</div>
+                        <div class="font-bold text-slate-800">${b.nama}</div>
+                        <div class="text-[10px] text-slate-400 font-mono">${b.kode}</div>
                     </div>
                     <i class="fa-solid fa-plus text-blue-500 text-xs"></i>
                 </li>
@@ -2020,7 +1956,9 @@
             closeBarangModal();
         }
 
-        // 15. MONITORING KEPATUHAN & DIAGRAM DONUT GLOBAL
+        // =================================================================
+        // 15. MONITORING KEPATUHAN & DIAGRAM DONUT GLOBAL (POIN 1)
+        // =================================================================
         function renderAllViews() {
             renderTables();
             updateStats();
@@ -2117,6 +2055,7 @@
         function updateComplianceDonut() {
             const c = getCompliance();
 
+            // 6 Kartu Metrik Kepatuhan Global
             document.getElementById('metricDinasSudah').innerText = c.dinasSudah;
             document.getElementById('metricDinasTotal').innerText = `/ ${c.dinasTotal}`;
             document.getElementById('metricDinasPercent').innerText = `${c.dinasTotal ? Math.round((c.dinasSudah / c.dinasTotal) * 100) : 0}% Selesai`;
@@ -2148,7 +2087,7 @@
             document.getElementById('legendKelVal').innerText = c.kelSudah;
             document.getElementById('legendBagianVal').innerText = c.bagianSudah;
 
-            const circumference = 2 * Math.PI * 55;
+            const circumference = 2 * Math.PI * 55; // 345.575
             const pct = c.totalSemua > 0 ? Math.round((c.totalSudah / c.totalSemua) * 100) : 0;
             document.getElementById('svgStatusPercent').innerText = `${pct}%`;
 
@@ -2195,7 +2134,7 @@
             }
         }
 
-        // 16. MODAL RINCIAN KEPATUHAN
+        // 16. MODAL RINCIAN KEPATUHAN & KARTU KENDALI
         function openSkpdDetailsModal(filter = "SEMUA") {
             modalActiveFilter = filter;
             const c = getCompliance();
@@ -2233,9 +2172,9 @@
             tbody.innerHTML = filteredList.map((s, idx) => `
                 <tr class="hover:bg-slate-50 border-b text-xs">
                     <td class="p-2.5 text-center text-slate-400 font-mono">${idx + 1}</td>
-                    <td class="p-2.5 font-bold text-slate-800">${escapeHtml(s.nama)}</td>
-                    <td class="p-2.5 text-center text-slate-600 font-semibold">${escapeHtml(s.kategori)}</td>
-                    <td class="p-2.5 text-center text-slate-500 font-medium">${escapeHtml(s.skpdInduk)}</td>
+                    <td class="p-2.5 font-bold text-slate-800">${s.nama}</td>
+                    <td class="p-2.5 text-center text-slate-600 font-semibold">${s.kategori}</td>
+                    <td class="p-2.5 text-center text-slate-500 font-medium">${s.skpdInduk}</td>
                     <td class="p-2.5 text-center">
                         ${s.submitted 
                             ? '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">SUDAH INPUT</span>' 
@@ -2277,9 +2216,8 @@
             ws['!cols'] = [{ wch: 6 }, { wch: 45 }, { wch: 18 }, { wch: 28 }, { wch: 22 }, { wch: 18 }, { wch: 20 }, { wch: 20 }];
             XLSX.utils.book_append_sheet(wb, ws, "Rekap_Kepatuhan_Daerah");
             XLSX.writeFile(wb, `Rekap_Kepatuhan_Konawe_TA2027_${Date.now()}.xlsx`);
-            }
+        }
 
-        // 16. CETAK KARTU KENDALI MONITORING KEPATUHAN
         function printSkpdComplianceReport() {
             const c = getCompliance();
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -2332,9 +2270,9 @@
                             ${c.all.map((s, idx) => `
                                 <tr>
                                     <td style="border: 1px solid black; padding: 4px; text-align: center;">${idx + 1}</td>
-                                    <td style="border: 1px solid black; padding: 4px; font-weight: bold;">${escapeHtml(s.nama)}</td>
-                                    <td style="border: 1px solid black; padding: 4px; text-align: center;">${escapeHtml(s.kategori)}</td>
-                                    <td style="border: 1px solid black; padding: 4px; text-align: center;">${escapeHtml(s.skpdInduk)}</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-weight: bold;">${s.nama}</td>
+                                    <td style="border: 1px solid black; padding: 4px; text-align: center;">${s.kategori}</td>
+                                    <td style="border: 1px solid black; padding: 4px; text-align: center;">${s.skpdInduk}</td>
                                     <td style="border: 1px solid black; padding: 4px; text-align: center; font-weight: bold; ${s.submitted ? 'color: #047857;' : 'color: #b91c1c;'}">
                                         ${s.submitted ? 'SUDAH INPUT' : 'BELUM INPUT'}
                                     </td>
@@ -2362,144 +2300,73 @@
         }
 
         // =================================================================
-        // 17. CETAK DOKUMEN BERTINGKAT KHUSUS KECAMATAN & DINKES (BERSIH)
+        // 17. FUNGSI STANDARISASI NOMENKLATUR TATA NASKAH DINAS (PERMENDAGRI NO. 61 TAHUN 2023)
         // =================================================================
-
-        function isUnitKecamatan(name) {
-            if (!name) return false;
-            return name.toUpperCase().includes("KECAMATAN") || name.toUpperCase().startsWith("KEC.");
-        }
-
-        function isUnitDinkes(name) {
-            if (!name) return false;
-            const n = name.toUpperCase();
-            return n.includes("KESEHATAN") || n.includes("DINKES");
-        }
-
-        function openPrintConfigModal() {
-            const modal = document.getElementById('printConfigModal');
-            const targetSelect = document.getElementById('printTargetSkpd');
-            const tglInput = document.getElementById('printTanggalDokumen');
-
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            tglInput.value = `Unaaha, ${new Date().toLocaleDateString('id-ID', options)}`;
-
-            const isAdmin = (currentUser.kategori === "Admin");
-            const isInduk = (childUnitsList && childUnitsList.length > 0);
+        function getOfficialDropdownLabel(namaUnit, isKonsolidasi) {
+                let clean = String(namaUnit || "").replace(/\s*\(\+[^)]*\)/gi, "").trim();
+                if (isKonsolidasi) {
+                    if (/^kecamatan\b/i.test(clean)) {
+                        return "Konsolidasi " + clean;
+                    }
+                    if (/^dinas kesehatan\b/i.test(clean)) {
+                        return "Konsolidasi Dinas Kesehatan";
+                    }
+                    return "Konsolidasi " + clean;
+                }
+                return clean;
+            }
 
             let skpdOptions = "";
-
             if (isAdmin) {
-                skpdOptions += `<option value="SEMUA_KABUPATEN">-- CETAK SEMUA SKPD (KABUPATEN KONAWE) --</option>`;
+                // 1. OPSI ADMIN RESMI KABUPATEN
+                skpdOptions += `<option value="SEMUA_KABUPATEN">Konsolidasi Pemerintah Kabupaten Konawe</option>`;
 
-                // Hanya daftar entitas induk bersih tanpa label tambahan
+                // 2. DAFTAR SKPD / KECAMATAN / DINAS KESEHATAN BERSIH RESMI
                 masterSkpdList.forEach(s => {
-                    if (!s.skpdInduk || s.skpdInduk === "-" || s.skpdInduk === "") {
-                        skpdOptions += `<option value="${escapeHtml(s.nama)}">${escapeHtml(s.nama)}</option>`;
+                    const punyaAnak = masterSkpdList.some(child => child.skpdInduk && child.skpdInduk.toLowerCase() === s.nama.toLowerCase());
+                    if (punyaAnak) {
+                        // Teks resmi tanpa embel-embel informal
+                        skpdOptions += `<option value="${s.nama}__GABUNGAN">${getOfficialDropdownLabel(s.nama, true)}</option>`;
+                        skpdOptions += `<option value="${s.nama}">${getOfficialDropdownLabel(s.nama, false)}</option>`;
+                    } else {
+                        skpdOptions += `<option value="${s.nama}">${getOfficialDropdownLabel(s.nama, false)}</option>`;
                     }
                 });
-
             } else if (isInduk) {
-                skpdOptions += `<option value="${escapeHtml(currentUser.nama_skpd)}">${escapeHtml(currentUser.nama_skpd)}</option>`;
+                // Hierarki Resmi Tingkat Kecamatan atau Dinas Kesehatan
+                skpdOptions += `<option value="GABUNGAN_INDUK">${getOfficialDropdownLabel(currentUser.nama_skpd, true)}</option>`;
+                skpdOptions += `<option value="${currentUser.nama_skpd}">${getOfficialDropdownLabel(currentUser.nama_skpd, false)}</option>`;
+                childUnitsList.forEach(child => {
+                    skpdOptions += `<option value="${child}">${getOfficialDropdownLabel(child, false)}</option>`;
+                });
             } else {
-                skpdOptions = `<option value="${escapeHtml(currentUser.nama_skpd)}">${escapeHtml(currentUser.nama_skpd)}</option>`;
+                skpdOptions = `<option value="${currentUser.nama_skpd}">${getOfficialDropdownLabel(currentUser.nama_skpd, false)}</option>`;
             }
-
             targetSelect.innerHTML = skpdOptions;
 
-            handlePrintTargetChange();
+            function loadSavedSignatures(selectedUnit) {
+                const cleanKey = (selectedUnit === "GABUNGAN_INDUK" || selectedUnit.endsWith("__GABUNGAN")) 
+                    ? (selectedUnit === "GABUNGAN_INDUK" ? currentUser.nama_skpd : selectedUnit.replace("__GABUNGAN", "")) 
+                    : selectedUnit;
+                const savedData = JSON.parse(localStorage.getItem(`rkbmd_ttd_${cleanKey}`) || "{}");
+                
+                const upper = cleanKey.toUpperCase();
+                let defaultJabatan = 'Kepala Dinas / Badan';
+                if (selectedUnit === "SEMUA_KABUPATEN") defaultJabatan = 'Kepala BPKAD Kab. Konawe';
+                else if (upper.includes('KECAMATAN')) defaultJabatan = 'Camat';
+                else if (upper.includes('KELURAHAN')) defaultJabatan = 'Lurah';
+                else if (upper.includes('PUSKESMAS')) defaultJabatan = 'Kepala Puskesmas';
+                else if (upper.includes('BAGIAN')) defaultJabatan = 'Kepala Bagian';
+
+                kadisJabatan.value = savedData.kadisJabatan || defaultJabatan;
+                kadisNama.value = savedData.kadisNama || '';
+                kadisNip.value = savedData.kadisNip || '';
+            }
+
+            targetSelect.onchange = () => loadSavedSignatures(targetSelect.value);
+            loadSavedSignatures(targetSelect.value);
+
             modal.classList.remove('hidden');
-        }
-
-        function handlePrintTargetChange() {
-            const selectedSkpd = document.getElementById('printTargetSkpd').value;
-            const subWrapper = document.getElementById('printSubUnitWrapper');
-            const subLabel = document.getElementById('printSubUnitLabel');
-            const subSelect = document.getElementById('printSubUnitSelect');
-
-            const isKec = isUnitKecamatan(selectedSkpd);
-            const isDk = isUnitDinkes(selectedSkpd);
-
-            // Pilihan bertingkat KHUSUS hanya untuk Kecamatan dan Dinas Kesehatan
-            if (isKec || isDk) {
-                subWrapper.classList.remove('hidden');
-
-                if (isKec) {
-                    subLabel.innerText = "Pilihan Tingkat Cetak Kelurahan:";
-                    const kelurahanList = masterSkpdList.filter(s => 
-                        (s.skpdInduk && s.skpdInduk.toLowerCase() === selectedSkpd.toLowerCase()) ||
-                        (s.kategori && s.kategori.toLowerCase() === "kelurahan" && s.skpdInduk.toLowerCase() === selectedSkpd.toLowerCase())
-                    );
-
-                    let opts = `
-                        <option value="GABUNGAN">Rekap Gabungan (Kecamatan &amp; Seluruh Kelurahan)</option>
-                        <option value="INDUK">Kantor Kecamatan Saja</option>
-                    `;
-
-                    kelurahanList.forEach(k => {
-                        opts += `<option value="${escapeHtml(k.nama)}">${escapeHtml(k.nama)}</option>`;
-                    });
-
-                    subSelect.innerHTML = opts;
-
-                } else if (isDk) {
-                    subLabel.innerText = "Pilihan Tingkat Cetak Puskesmas:";
-                    const pkmList = masterSkpdList.filter(s => 
-                        (s.skpdInduk && s.skpdInduk.toLowerCase() === selectedSkpd.toLowerCase()) ||
-                        (s.kategori && s.kategori.toLowerCase() === "puskesmas")
-                    );
-
-                    let opts = `
-                        <option value="GABUNGAN">Rekap Gabungan (Dinas &amp; Seluruh Puskesmas)</option>
-                        <option value="INDUK">Dinas Kesehatan Saja</option>
-                    `;
-
-                    pkmList.forEach(p => {
-                        opts += `<option value="${escapeHtml(p.nama)}">${escapeHtml(p.nama)}</option>`;
-                    });
-
-                    subSelect.innerHTML = opts;
-                }
-            } else {
-                // Untuk SKPD lainnya, pilihan bertingkat ditiadakan
-                subWrapper.classList.add('hidden');
-                subSelect.innerHTML = "";
-            }
-
-            handleSubUnitChange();
-        }
-
-        function handleSubUnitChange() {
-            const targetSkpd = document.getElementById('printTargetSkpd').value;
-            const subWrapper = document.getElementById('printSubUnitWrapper');
-            const subSelect = document.getElementById('printSubUnitSelect');
-
-            let activeEntityName = targetSkpd;
-            if (!subWrapper.classList.contains('hidden') && subSelect.value && subSelect.value !== "GABUNGAN" && subSelect.value !== "INDUK") {
-                activeEntityName = subSelect.value;
-            }
-
-            loadSavedSignatures(activeEntityName, targetSkpd);
-        }
-
-        function loadSavedSignatures(entityName, parentName) {
-            const kadisJabatan = document.getElementById('printKadisJabatan');
-            const kadisNama = document.getElementById('printKadisNama');
-            const kadisNip = document.getElementById('printKadisNip');
-
-            const savedData = JSON.parse(localStorage.getItem(`rkbmd_ttd_${entityName}`) || "{}");
-            const upper = entityName.toUpperCase();
-
-            let defaultJabatan = 'Kepala Dinas / Badan';
-            if (entityName === "SEMUA_KABUPATEN") defaultJabatan = 'Kepala BPKAD Kab. Konawe';
-            else if (upper.includes('KECAMATAN')) defaultJabatan = 'Camat ' + entityName.replace(/KECAMATAN/i, '').trim();
-            else if (upper.includes('KELURAHAN')) defaultJabatan = 'Lurah ' + entityName.replace(/KELURAHAN/i, '').trim();
-            else if (upper.includes('PUSKESMAS')) defaultJabatan = 'Kepala ' + entityName;
-            else if (upper.includes('BAGIAN')) defaultJabatan = 'Kepala Bagian';
-
-            kadisJabatan.value = savedData.kadisJabatan || defaultJabatan;
-            kadisNama.value = savedData.kadisNama || '';
-            kadisNip.value = savedData.kadisNip || '';
         }
 
         function closePrintConfigModal() {
@@ -2510,16 +2377,12 @@
             e.preventDefault();
 
             const targetVal = document.getElementById('printTargetSkpd').value;
-            const subWrapper = document.getElementById('printSubUnitWrapper');
-            const subSelect = document.getElementById('printSubUnitSelect');
-            const subVal = (!subWrapper.classList.contains('hidden')) ? subSelect.value : null;
-
             const tglDokumen = document.getElementById('printTanggalDokumen').value;
             const kadisJabatan = document.getElementById('printKadisJabatan').value;
             const kadisNama = document.getElementById('printKadisNama').value;
             const kadisNip = document.getElementById('printKadisNip').value;
 
-            const storageKey = (subVal && subVal !== "GABUNGAN" && subVal !== "INDUK") ? subVal : targetVal;
+            const storageKey = targetVal === "GABUNGAN_INDUK" ? currentUser.nama_skpd : (targetVal.endsWith("__GABUNGAN") ? targetVal.replace("__GABUNGAN", "") : targetVal);
             localStorage.setItem(`rkbmd_ttd_${storageKey}`, JSON.stringify({
                 kadisJabatan, kadisNama, kadisNip
             }));
@@ -2527,40 +2390,54 @@
             let rows = [];
             let displayTitleUnit = targetVal;
 
-            if (targetVal === "SEMUA_KABUPATEN") {
-                displayTitleUnit = `PEMERINTAH KABUPATEN KONAWE (GABUNGAN SELURUH SKPD)`;
-                rows = dataset.filter(i => i.jenis === currentTab);
-
-            } else if (subVal) {
-                if (subVal === "GABUNGAN") {
-                    displayTitleUnit = `${targetVal} (REKAPITULASI GABUNGAN)`;
-                    const childNames = masterSkpdList
-                        .filter(s => s.skpdInduk && s.skpdInduk.toLowerCase() === targetVal.toLowerCase())
-                        .map(s => s.nama.toLowerCase());
-
-                    rows = dataset.filter(i => 
-                        i.jenis === currentTab && (
-                            i.skpd.toLowerCase() === targetVal.toLowerCase() ||
-                            childNames.includes(i.skpd.toLowerCase())
-                        )
-                    );
-                } else if (subVal === "INDUK") {
-                    displayTitleUnit = `${targetVal} (KANTOR INDUK)`;
-                    rows = dataset.filter(i => i.jenis === currentTab && i.skpd.toLowerCase() === targetVal.toLowerCase());
-                } else {
-                    displayTitleUnit = subVal;
-                    rows = dataset.filter(i => i.jenis === currentTab && i.skpd.toLowerCase() === subVal.toLowerCase());
+            // FORMAT STANDAR NASKAH DINAS PENGGUNA BARANG RESMI
+            function formatOfficialDocTitle(namaUnit, isKonsolidasi) {
+                let clean = String(namaUnit || "").replace(/\s*\(\+[^)]*\)/gi, "").trim().toUpperCase();
+                if (isKonsolidasi) {
+                    if (clean.indexOf("KONSOLIDASI") === -1) {
+                        return "KONSOLIDASI " + clean;
+                    }
                 }
+                return clean;
+            }
 
+            if (targetVal === "SEMUA_KABUPATEN") {
+                // 1. KONSOLIDASI DAERAH KABUPATEN KONAWE
+                displayTitleUnit = `KONSOLIDASI PEMERINTAH KABUPATEN KONAWE`;
+                rows = dataset.filter(i => i.jenis === currentTab);
+            } else if (targetVal === "GABUNGAN_INDUK") {
+                // 2. KONSOLIDASI RESMI KECAMATAN / DINAS KESEHATAN
+                displayTitleUnit = formatOfficialDocTitle(currentUser.nama_skpd, true);
+                rows = dataset.filter(i => 
+                    i.jenis === currentTab && (
+                        i.skpd.toLowerCase() === currentUser.nama_skpd.toLowerCase() ||
+                        childUnitsList.some(c => c.toLowerCase() === i.skpd.toLowerCase())
+                    )
+                );
+            } else if (targetVal.endsWith("__GABUNGAN")) {
+                // 3. KONSOLIDASI TERPILIH OLEH ADMIN
+                const indukName = targetVal.replace("__GABUNGAN", "");
+                displayTitleUnit = formatOfficialDocTitle(indukName, true);
+                const anakUnits = masterSkpdList
+                    .filter(s => s.skpdInduk && s.skpdInduk.toLowerCase() === indukName.toLowerCase())
+                    .map(s => s.nama.toLowerCase());
+
+                rows = dataset.filter(i => 
+                    i.jenis === currentTab && (
+                        i.skpd.toLowerCase() === indukName.toLowerCase() ||
+                        anakUnits.includes(i.skpd.toLowerCase())
+                    )
+                );
             } else {
-                displayTitleUnit = targetVal;
+                // 4. UNIT TUNGGAL RESMI (TANPA SUFIKS INFORMAL)
+                displayTitleUnit = formatOfficialDocTitle(targetVal, false);
                 rows = dataset.filter(i => i.jenis === currentTab && i.skpd.toLowerCase() === targetVal.toLowerCase());
             }
 
             if (rows.length === 0) {
                 showSystemDialog({
                     title: "Data Tidak Ditemukan",
-                    message: `Tidak ada usulan ${currentTab} untuk unit:\n"${displayTitleUnit}".`,
+                    message: `Tidak ada usulan ${currentTab} untuk unit:\n"${targetVal}".`,
                     type: "warning",
                     confirmText: "Tutup"
                 });
@@ -2571,7 +2448,9 @@
             const docContainer = document.getElementById('printable-doc');
 
             if (isRk) {
-                // FORMAT RESMI RKBMD PENGADAAN (15 KOLOM)
+                // =================================================================
+                // 1. FORMAT RESMI RKBMD PENGADAAN (15 KOLOM MURNI)
+                // =================================================================
                 docContainer.innerHTML = `
                     <div style="font-family: 'Times New Roman', Times, serif; line-height: 1.15;">
                         <div style="text-align: right; font-size: 8.5pt; font-style: italic; margin-bottom: 2px;">
@@ -2586,7 +2465,7 @@
                                 (RENCANA PENGADAAN)
                             </div>
                             <div style="font-size: 9.5pt; font-weight: bold; text-transform: uppercase;">
-                                PENGGUNA BARANG : ${escapeHtml(displayTitleUnit)}
+                                PENGGUNA BARANG : ${displayTitleUnit}
                             </div>
                             <div style="font-size: 9.5pt; font-weight: bold;">
                                 TAHUN 2027
@@ -2653,20 +2532,20 @@
                                 ${rows.map((r, idx) => `
                                     <tr>
                                         <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${idx + 1}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px;">${escapeHtml(r.programKegiatanOutput || '-')}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px; font-family: monospace; text-align: center;">${escapeHtml(r.kodeBarang || '-')}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px; font-weight: bold;">${escapeHtml(r.namaBarang)}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px;">${r.programKegiatanOutput || '-'}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px; font-family: monospace; text-align: center;">${r.kodeBarang || '-'}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px; font-weight: bold;">${r.namaBarang}</td>
                                         <td style="border: 1px solid black; padding: 2.5px; text-align: center; font-weight: bold;">${r.jumlahUsulan}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${escapeHtml(r.satuan)}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.satuan}</td>
                                         <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.kebutuhanMaksimum || 0}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${escapeHtml(r.satuan)}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px; font-family: monospace; text-align: center;">${r.optimalisasi > 0 ? escapeHtml(r.kodeBarang || '-') : '-'}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px;">${r.optimalisasi > 0 ? escapeHtml(r.namaBarang) : '-'}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.satuan}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px; font-family: monospace; text-align: center;">${r.optimalisasi > 0 ? (r.kodeBarang || '-') : '-'}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px;">${r.optimalisasi > 0 ? r.namaBarang : '-'}</td>
                                         <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.optimalisasi || 0}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.optimalisasi > 0 ? escapeHtml(r.satuan) : '-'}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.optimalisasi > 0 ? r.satuan : '-'}</td>
                                         <td style="border: 1px solid black; padding: 2.5px; text-align: center; font-weight: bold;">${r.kebutuhanRiil || 0}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${escapeHtml(r.satuan)}</td>
-                                        <td style="border: 1px solid black; padding: 2.5px;">${escapeHtml(r.keterangan || '-')}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.satuan}</td>
+                                        <td style="border: 1px solid black; padding: 2.5px;">${r.keterangan || '-'}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -2674,18 +2553,20 @@
 
                         <div class="ttd-container" style="margin-top: 20px; display: flex; justify-content: flex-end; font-size: 9pt; page-break-inside: avoid;">
                             <div style="text-align: center; min-width: 250px;">
-                                <div>${escapeHtml(tglDokumen)}</div>
+                                <div>${tglDokumen}</div>
                                 <div>Pengguna Barang / Kuasa Pengguna Barang</div>
-                                <div style="font-weight: bold;">${escapeHtml(kadisJabatan)}</div>
+                                <div style="font-weight: bold;">${kadisJabatan}</div>
                                 <div style="height: 50px;"></div>
-                                <div style="font-weight: bold; text-decoration: underline;">${escapeHtml(kadisNama)}</div>
-                                <div>NIP. ${escapeHtml(kadisNip)}</div>
+                                <div style="font-weight: bold; text-decoration: underline;">${kadisNama}</div>
+                                <div>NIP. ${kadisNip}</div>
                             </div>
                         </div>
                     </div>
                 `;
             } else {
-                // FORMAT RESMI RKPBMD PEMELIHARAAN (14 KOLOM)
+                // =================================================================
+                // 2. FORMAT RESMI RKPBMD PEMELIHARAAN (KONDISI B, RR, RB TERISI ANGKA & 0)
+                // =================================================================
                 docContainer.innerHTML = `
                     <div style="font-family: 'Times New Roman', Times, serif; line-height: 1.15;">
                         <div style="text-align: right; font-size: 8.5pt; font-style: italic; margin-bottom: 2px;">
@@ -2700,7 +2581,7 @@
                                 (RENCANA PEMELIHARAAN)
                             </div>
                             <div style="font-size: 9.5pt; font-weight: bold; text-transform: uppercase;">
-                                PENGGUNA BARANG : ${escapeHtml(displayTitleUnit)}
+                                PENGGUNA BARANG : ${displayTitleUnit}
                             </div>
                             <div style="font-size: 9.5pt; font-weight: bold;">
                                 TAHUN 2027
@@ -2763,6 +2644,8 @@
                                 ${rows.map((r, idx) => {
                                     const itemQty = r.jumlahKib || r.jumlahUsulan || 1;
                                     const cond = (r.kondisiBarang || "").trim().toLowerCase();
+                                    
+                                    // Sesuai aturan: jika Baik terisi angka jumlah, selainnya 0
                                     const qtyB = (cond === "baik" || cond === "b") ? itemQty : 0;
                                     const qtyRR = (cond === "rusak ringan" || cond === "rr") ? itemQty : 0;
                                     const qtyRB = (cond === "rusak berat" || cond === "rb") ? itemQty : 0;
@@ -2770,19 +2653,19 @@
                                     return `
                                         <tr>
                                             <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${idx + 1}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px;">${escapeHtml(r.programKegiatanOutput || '-')}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px; font-family: monospace; text-align: center;">${escapeHtml(r.kodeBarang || '-')}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px; font-weight: bold;">${escapeHtml(r.namaBarang)}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px;">${r.programKegiatanOutput || '-'}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px; font-family: monospace; text-align: center;">${r.kodeBarang || '-'}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px; font-weight: bold;">${r.namaBarang}</td>
                                             <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${itemQty}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${escapeHtml(r.satuan)}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${escapeHtml(r.statusBarang || 'Dipergunakan Sendiri')}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.satuan}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.statusBarang || 'Dipergunakan Sendiri'}</td>
                                             <td style="border: 1px solid black; padding: 2.5px; text-align: center; font-weight: bold;">${qtyB}</td>
                                             <td style="border: 1px solid black; padding: 2.5px; text-align: center; font-weight: bold;">${qtyRR}</td>
                                             <td style="border: 1px solid black; padding: 2.5px; text-align: center; font-weight: bold;">${qtyRB}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px;">${escapeHtml(r.namaPemeliharaan || '-')}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px;">${r.namaPemeliharaan || '-'}</td>
                                             <td style="border: 1px solid black; padding: 2.5px; text-align: center; font-weight: bold;">${r.jumlahUsulan}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${escapeHtml(r.satuan)}</td>
-                                            <td style="border: 1px solid black; padding: 2.5px;">${escapeHtml(r.keterangan || '-')}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px; text-align: center;">${r.satuan}</td>
+                                            <td style="border: 1px solid black; padding: 2.5px;">${r.keterangan || '-'}</td>
                                         </tr>
                                     `;
                                 }).join('')}
@@ -2791,12 +2674,12 @@
 
                         <div class="ttd-container" style="margin-top: 20px; display: flex; justify-content: flex-end; font-size: 9pt; page-break-inside: avoid;">
                             <div style="text-align: center; min-width: 250px;">
-                                <div>${escapeHtml(tglDokumen)}</div>
+                                <div>${tglDokumen}</div>
                                 <div>Pengguna Barang / Kuasa Pengguna Barang</div>
-                                <div style="font-weight: bold;">${escapeHtml(kadisJabatan)}</div>
+                                <div style="font-weight: bold;">${kadisJabatan}</div>
                                 <div style="height: 50px;"></div>
-                                <div style="font-weight: bold; text-decoration: underline;">${escapeHtml(kadisNama)}</div>
-                                <div>NIP. ${escapeHtml(kadisNip)}</div>
+                                <div style="font-weight: bold; text-decoration: underline;">${kadisNama}</div>
+                                <div>NIP. ${kadisNip}</div>
                             </div>
                         </div>
                     </div>
@@ -2823,6 +2706,64 @@
             const wb = XLSX.utils.table_to_book(table, { sheet: currentTab });
             XLSX.writeFile(wb, `${currentTab}_Konawe_2027_${Date.now()}.xlsx`);
         }
+    <!-- ======================================================== -->
+    <!-- [SECURITY] ANTI-INSPECT, ANTI-COPY & ANTI-DEBUGGER TRAP  -->
+    <!-- ======================================================== -->
+    <script>
+        (function() {
+            "use strict";
+
+            // 1. Kunci Menu Klik Kanan
+            document.addEventListener("contextmenu", function(e) {
+                e.preventDefault();
+                return false;
+            }, { capture: true });
+
+            // 2. Kunci Kombinasi Tombol Inspeksi DevTools & View Source
+            document.addEventListener("keydown", function(e) {
+                // F12
+                if (e.keyCode === 123) {
+                    e.preventDefault();
+                    return false;
+                }
+                // Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspect Element)
+                if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+                    e.preventDefault();
+                    return false;
+                }
+                // Mac: Cmd+Opt+I, Cmd+Opt+J, Cmd+Opt+C
+                if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+                    e.preventDefault();
+                    return false;
+                }
+                // Ctrl+U (View Source), Ctrl+S (Save Page)
+                if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, { capture: true });
+
+            // 3. Matikan Clipboard Copy / Cut pada elemen sistem (Kecuali input aktif)
+            document.addEventListener("copy", function(e) {
+                const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+                if (tag !== "input" && tag !== "textarea") {
+                    e.preventDefault();
+                }
+            }, { capture: true });
+
+            // 4. Anti-Debugger Trap (Membekukan eksekusi jika konsol dibuka paksa)
+            function initDebuggerTrap() {
+                function _trap() {
+                    try {
+                        (function() {
+                            return false;
+                        }["constructor"]("debugger")["call"]());
+                    } catch (err) {}
+                }
+                setInterval(_trap, 500);
+            }
+            initDebuggerTrap();
+        })();
     </script>
 </body>
 </html>
