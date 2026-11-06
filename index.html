@@ -36,19 +36,12 @@
 
     <script>
         (function() {
-            // 1. Deteksi automation headless driver (Puppeteer, Selenium, PhantomJS)
-            const isHeadless = navigator.webdriver || 
-                               window._phantom || 
-                               window.__nightmare || 
-                               navigator.userAgent.indexOf("HeadlessChrome") !== -1;
-
-            // 2. Deteksi crawler bot Google & mesin perayap populer
+            // Deteksi bot crawler mesin pencari populer via User-Agent
             const botList = ["googlebot", "bingbot", "yandexbot", "duckduckbot", "baiduspider", "slurp", "ia_archiver"];
             const currentUa = (navigator.userAgent || "").toLowerCase();
             const isBot = botList.some(bot => currentUa.indexOf(bot) !== -1);
 
-            // Jika terdeteksi perayap otomatis, hancurkan rendering DOM
-            if (isHeadless || isBot) {
+            if (isBot) {
                 window.stop();
                 if (document.documentElement) {
                     document.documentElement.innerHTML = "";
@@ -82,6 +75,15 @@
         .cursor-pointer, button, [onclick] {
             cursor: pointer !important;
         }
+        input, select, textarea {
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            pointer-events: auto !important;
+        }
         input[readonly], textarea[readonly] {
             caret-color: transparent !important;
             user-select: none !important;
@@ -91,13 +93,6 @@
             transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease, stroke-width 0.2s ease, opacity 0.2s ease;
         }
         .donut-segment:hover { stroke-width: 24; opacity: 0.9; }
-
-        input, select, textarea {
-            font-size: 13px !important;
-            line-height: 1.4 !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-        }
 
         /* ATURAN CETAK RESMI PERMENDAGRI NO. 61 TAHUN 2023 */
         @media print {
@@ -288,7 +283,7 @@
             </div>
         </div>
 
-        <!-- 1. AGENDA & JADWAL BATAS WAKTU PELAPORAN (3 WARNA STATUS & JAM LENGKAP) -->
+        <!-- 1. AGENDA & JADWAL BATAS WAKTU PELAPORAN -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 select-none">
             <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
                 <div class="flex items-center gap-2">
@@ -299,13 +294,12 @@
                 </div>
                 <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800">T.A. 2027</span>
             </div>
-            <!-- Wadah kartu agenda diisi dinamis dari spreadsheet -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs" id="agendaTimelineContainer">
                 <div class="p-4 text-center text-slate-400 italic col-span-full">Memuat jadwal agenda dari database...</div>
             </div>
         </div>
 
-        <!-- 2. NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN (RESPONSIF TOTAL DI HP ANDROID & LAPTOP) -->
+        <!-- 2. NOTIFIKASI JAM MUNDUR SESUAI AGENDA USER LOGIN -->
         <div id="agendaUserCountdownBox" class="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white p-3 sm:p-4 rounded-2xl shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-3 select-none w-full max-w-full overflow-hidden">
             <div class="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0 w-full md:w-auto flex-1">
                 <div class="p-2 sm:p-2.5 bg-amber-400 text-slate-950 rounded-xl text-base sm:text-lg font-black shrink-0 mt-0.5 sm:mt-0">
@@ -345,7 +339,7 @@
             </div>
         </div>
 
-        <!-- 3. MONITORING KEPATUHAN PENGINPUTAN (6 METRIK GLOBAL & 2 DONUT INTERAKTIF) -->
+        <!-- 3. MONITORING KEPATUHAN PENGINPUTAN -->
         <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
                 <div>
@@ -885,7 +879,7 @@
         </div>
     </div>
 
-    <!-- MODAL PARAMETER TANDA TANGAN & CETAK (HANYA PENGGUNA BARANG) -->
+    <!-- MODAL PARAMETER TANDA TANGAN & CETAK -->
     <div id="printConfigModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 z-50 hidden select-none overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-100 max-h-[92vh] flex flex-col my-auto">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
@@ -893,7 +887,7 @@
                     <h3 class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
                         <i class="fa-solid fa-file-invoice text-indigo-600"></i> Pengaturan Cetak Permendagri No. 61/2023
                     </h3>
-                    <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Lengk data pejabat penandatangan sebelum mencetak.</p>
+                    <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Lengkapi data pejabat penandatangan sebelum mencetak.</p>
                 </div>
                 <button type="button" onclick="closePrintConfigModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold cursor-pointer leading-none">&times;</button>
             </div>
@@ -908,7 +902,6 @@
                     <input type="text" id="printTanggalDokumen" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-1.5 font-semibold text-slate-800 focus:outline-none" required>
                 </div>
 
-                <!-- Bagian Pengguna Barang / Kuasa Pengguna Barang (Satu-satunya Penandatangan) -->
                 <div class="p-3 bg-indigo-50/60 border border-indigo-200 rounded-2xl space-y-2">
                     <span class="font-bold text-indigo-900 flex items-center gap-1.5 uppercase text-[10px]">
                         <i class="fa-solid fa-user-tie text-indigo-600"></i> Pengguna Barang / Kuasa Pengguna Barang
@@ -944,10 +937,10 @@
 
     <!-- ================= JAVASCRIPT LOGIKA KLIEN ================= -->
     <script>
-        // String Obfuscation Engine: Mengamankan endpoint dari crawler plaintext
-        const _0xSec = ["aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3dkVIYWlnOXNVY0dqSTVBR1Z2NnNDYmxheHRNZnpGVFFJMm5wMVN4NnRHVWJwaGVFSE9tMmpuNi1ZdHJiZ1ZTVjgvZXhlYw=="];
-        const DEFAULT_API_URL = decodeURIComponent(escape(window.atob(_0xSec[0])));
-        let API_URL = localStorage.getItem('custom_rkbmd_url') || DEFAULT_API_URL;
+        // URL API Google Apps Script Backend
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwvEHaig9sUcGjI5AGV67sCblaxtMfzFTQI2np1Sx6tGUbpheEHOm2jn6-YtrbgVSV8/exec";
+        localStorage.removeItem('custom_rkbmd_url');
+        let API_URL = DEFAULT_API_URL;
 
         let currentUser = null;
         let authToken = null;
@@ -1219,13 +1212,8 @@
 
                     populateSkpdSelect();
                     renderAllViews();
-                    
-                    // Render 4 Kartu Agenda Dinamis dari Spreadsheet
                     renderAgendaTimeline(agendaList);
-                    
-                    // Jalankan Mesin Countdown Jam Mundur Real-Time
                     initUserCountdown(res.activeAgenda);
-                    
                     hideConnectionError();
                 } else if (res.status === "unauthorized") {
                     showSystemDialog({
@@ -1245,9 +1233,7 @@
             }
         }
 
-        // =================================================================
-        // 6. RENDER KARTU AGENDA DINAMIS (3 WARNA STATUS & JAM LENGKAP)
-        // =================================================================
+        // 6. RENDER KARTU AGENDA DINAMIS
         function renderAgendaTimeline(list) {
             const container = document.getElementById('agendaTimelineContainer');
             if (!container) return;
@@ -1259,8 +1245,6 @@
 
             container.innerHTML = list.map((a) => {
                 const statusStr = (a.statusPelaksanaan || "").toLowerCase();
-                
-                // STANDARISASI HANYA 3 STATUS & 3 WARNA SAJA
                 let statusLabel = "SEDANG BERJALAN";
                 let theme = {
                     cardBg: "bg-emerald-50/70",
@@ -1293,7 +1277,6 @@
                     };
                 }
 
-                // Bagian Jam ditampilkan lengkap tanpa truncate (tidak terpotong di HP/Laptop)
                 return `
                     <div class="p-3 ${theme.cardBg} border ${theme.border} rounded-xl flex flex-col justify-between">
                         <div>
@@ -1312,9 +1295,7 @@
             }).join('');
         }
 
-        // =================================================================
-        // 7. MESIN COUNTDOWN JAM MUNDUR (RESPONSIF DI HP & 3 WARNA STATUS)
-        // =================================================================
+        // 7. COUNTDOWN TIMER
         function initUserCountdown(activeAgenda) {
             if (countdownTimer) clearInterval(countdownTimer);
 
@@ -1329,7 +1310,6 @@
                 titleEl.innerText = activeAgenda.namaKegiatan || `Batas Penginputan: ${currentUser.nama_skpd}`;
                 deadlineText.innerText = `Batas Akhir: ${activeAgenda.batasAkhir}`;
                 
-                // Status sinkron 3 warna
                 const stLower = (activeAgenda.statusPelaksanaan || "").toLowerCase();
                 if (activeAgenda.isExpired || stLower.includes("berakhir")) {
                     tahapTag.innerText = "BERAKHIR";
@@ -1956,9 +1936,7 @@
             closeBarangModal();
         }
 
-        // =================================================================
-        // 15. MONITORING KEPATUHAN & DIAGRAM DONUT GLOBAL (POIN 1)
-        // =================================================================
+        // 15. MONITORING KEPATUHAN & DIAGRAM DONUT
         function renderAllViews() {
             renderTables();
             updateStats();
@@ -2055,7 +2033,6 @@
         function updateComplianceDonut() {
             const c = getCompliance();
 
-            // 6 Kartu Metrik Kepatuhan Global
             document.getElementById('metricDinasSudah').innerText = c.dinasSudah;
             document.getElementById('metricDinasTotal').innerText = `/ ${c.dinasTotal}`;
             document.getElementById('metricDinasPercent').innerText = `${c.dinasTotal ? Math.round((c.dinasSudah / c.dinasTotal) * 100) : 0}% Selesai`;
@@ -2068,7 +2045,7 @@
             document.getElementById('metricPuskesmasTotal').innerText = `/ ${c.pkmTotal}`;
             document.getElementById('metricPuskesmasPercent').innerText = `${c.pkmTotal ? Math.round((c.pkmSudah / c.pkmTotal) * 100) : 0}% Selesai`;
 
-            document.getElementById('metricKelurahanSudah').innerText = c.kelKel = c.kelSudah;
+            document.getElementById('metricKelurahanSudah').innerText = c.kelSudah;
             document.getElementById('metricKelurahanTotal').innerText = `/ ${c.kelTotal}`;
             document.getElementById('metricKelurahanPercent').innerText = `${c.kelTotal ? Math.round((c.kelSudah / c.kelTotal) * 100) : 0}% Selesai`;
 
@@ -2300,9 +2277,25 @@
         }
 
         // =================================================================
-        // 17. FUNGSI STANDARISASI NOMENKLATUR TATA NASKAH DINAS (PERMENDAGRI NO. 61 TAHUN 2023)
+        // 17. CETAK RESMI FORMAT PERMENDAGRI NO. 61 TAHUN 2023 (PERBAIKAN)
         // =================================================================
-        function getOfficialDropdownLabel(namaUnit, isKonsolidasi) {
+        function openPrintConfigModal() {
+            const modal = document.getElementById('printConfigModal');
+            const targetSelect = document.getElementById('printTargetSkpd');
+            const tglInput = document.getElementById('printTanggalDokumen');
+            const kadisJabatan = document.getElementById('printKadisJabatan');
+            const kadisNama = document.getElementById('printKadisNama');
+            const kadisNip = document.getElementById('printKadisNip');
+
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const todayStr = new Date().toLocaleDateString('id-ID', options);
+            tglInput.value = `Unaaha, ${todayStr}`;
+
+            const isAdmin = (currentUser && currentUser.kategori === "Admin");
+            const isInduk = (childUnitsList && childUnitsList.length > 0);
+
+            // Nomenklatur resmi tata naskah dinas Permendagri No. 61 Tahun 2023
+            function getOfficialDropdownLabel(namaUnit, isKonsolidasi) {
                 let clean = String(namaUnit || "").replace(/\s*\(\+[^)]*\)/gi, "").trim();
                 if (isKonsolidasi) {
                     if (/^kecamatan\b/i.test(clean)) {
@@ -2318,14 +2311,10 @@
 
             let skpdOptions = "";
             if (isAdmin) {
-                // 1. OPSI ADMIN RESMI KABUPATEN
                 skpdOptions += `<option value="SEMUA_KABUPATEN">Konsolidasi Pemerintah Kabupaten Konawe</option>`;
-
-                // 2. DAFTAR SKPD / KECAMATAN / DINAS KESEHATAN BERSIH RESMI
                 masterSkpdList.forEach(s => {
                     const punyaAnak = masterSkpdList.some(child => child.skpdInduk && child.skpdInduk.toLowerCase() === s.nama.toLowerCase());
                     if (punyaAnak) {
-                        // Teks resmi tanpa embel-embel informal
                         skpdOptions += `<option value="${s.nama}__GABUNGAN">${getOfficialDropdownLabel(s.nama, true)}</option>`;
                         skpdOptions += `<option value="${s.nama}">${getOfficialDropdownLabel(s.nama, false)}</option>`;
                     } else {
@@ -2333,7 +2322,6 @@
                     }
                 });
             } else if (isInduk) {
-                // Hierarki Resmi Tingkat Kecamatan atau Dinas Kesehatan
                 skpdOptions += `<option value="GABUNGAN_INDUK">${getOfficialDropdownLabel(currentUser.nama_skpd, true)}</option>`;
                 skpdOptions += `<option value="${currentUser.nama_skpd}">${getOfficialDropdownLabel(currentUser.nama_skpd, false)}</option>`;
                 childUnitsList.forEach(child => {
@@ -2390,7 +2378,6 @@
             let rows = [];
             let displayTitleUnit = targetVal;
 
-            // FORMAT STANDAR NASKAH DINAS PENGGUNA BARANG RESMI
             function formatOfficialDocTitle(namaUnit, isKonsolidasi) {
                 let clean = String(namaUnit || "").replace(/\s*\(\+[^)]*\)/gi, "").trim().toUpperCase();
                 if (isKonsolidasi) {
@@ -2402,11 +2389,9 @@
             }
 
             if (targetVal === "SEMUA_KABUPATEN") {
-                // 1. KONSOLIDASI DAERAH KABUPATEN KONAWE
                 displayTitleUnit = `KONSOLIDASI PEMERINTAH KABUPATEN KONAWE`;
                 rows = dataset.filter(i => i.jenis === currentTab);
             } else if (targetVal === "GABUNGAN_INDUK") {
-                // 2. KONSOLIDASI RESMI KECAMATAN / DINAS KESEHATAN
                 displayTitleUnit = formatOfficialDocTitle(currentUser.nama_skpd, true);
                 rows = dataset.filter(i => 
                     i.jenis === currentTab && (
@@ -2415,7 +2400,6 @@
                     )
                 );
             } else if (targetVal.endsWith("__GABUNGAN")) {
-                // 3. KONSOLIDASI TERPILIH OLEH ADMIN
                 const indukName = targetVal.replace("__GABUNGAN", "");
                 displayTitleUnit = formatOfficialDocTitle(indukName, true);
                 const anakUnits = masterSkpdList
@@ -2429,7 +2413,6 @@
                     )
                 );
             } else {
-                // 4. UNIT TUNGGAL RESMI (TANPA SUFIKS INFORMAL)
                 displayTitleUnit = formatOfficialDocTitle(targetVal, false);
                 rows = dataset.filter(i => i.jenis === currentTab && i.skpd.toLowerCase() === targetVal.toLowerCase());
             }
@@ -2448,9 +2431,6 @@
             const docContainer = document.getElementById('printable-doc');
 
             if (isRk) {
-                // =================================================================
-                // 1. FORMAT RESMI RKBMD PENGADAAN (15 KOLOM MURNI)
-                // =================================================================
                 docContainer.innerHTML = `
                     <div style="font-family: 'Times New Roman', Times, serif; line-height: 1.15;">
                         <div style="text-align: right; font-size: 8.5pt; font-style: italic; margin-bottom: 2px;">
@@ -2564,9 +2544,6 @@
                     </div>
                 `;
             } else {
-                // =================================================================
-                // 2. FORMAT RESMI RKPBMD PEMELIHARAAN (KONDISI B, RR, RB TERISI ANGKA & 0)
-                // =================================================================
                 docContainer.innerHTML = `
                     <div style="font-family: 'Times New Roman', Times, serif; line-height: 1.15;">
                         <div style="text-align: right; font-size: 8.5pt; font-style: italic; margin-bottom: 2px;">
@@ -2644,8 +2621,6 @@
                                 ${rows.map((r, idx) => {
                                     const itemQty = r.jumlahKib || r.jumlahUsulan || 1;
                                     const cond = (r.kondisiBarang || "").trim().toLowerCase();
-                                    
-                                    // Sesuai aturan: jika Baik terisi angka jumlah, selainnya 0
                                     const qtyB = (cond === "baik" || cond === "b") ? itemQty : 0;
                                     const qtyRR = (cond === "rusak ringan" || cond === "rr") ? itemQty : 0;
                                     const qtyRB = (cond === "rusak berat" || cond === "rb") ? itemQty : 0;
@@ -2706,25 +2681,11 @@
             const wb = XLSX.utils.table_to_book(table, { sheet: currentTab });
             XLSX.writeFile(wb, `${currentTab}_Konawe_2027_${Date.now()}.xlsx`);
         }
+    </script>
+
     <!-- ======================================================== -->
     <!-- [SECURITY PRO] ANTI-INSPECT, ANTI-COPY & NON-FREEZE TRAP -->
     <!-- ======================================================== -->
-    <style>
-        /* Tetap izinkan input & form agar bisa diklik dan diketik normal */
-        input, textarea, select {
-            -webkit-user-select: text !important;
-            -moz-user-select: text !important;
-            -ms-user-select: text !important;
-            user-select: text !important;
-            pointer-events: auto !important;
-            cursor: text !important;
-        }
-        button, a, [onclick] {
-            pointer-events: auto !important;
-            cursor: pointer !important;
-        }
-    </style>
-
     <script>
         (function() {
             "use strict";
@@ -2776,7 +2737,6 @@
                 const devtoolsOpen = (window.outerWidth - window.innerWidth > threshold) || 
                                      (window.outerHeight - window.innerHeight > threshold);
                 if (devtoolsOpen) {
-                    // Bersihkan jejak log console secara silent tanpa mematikan thread UI
                     if (window.console && window.console.clear) {
                         console.clear();
                     }
@@ -2784,4 +2744,5 @@
             }, 1000);
         })();
     </script>
+</body>
 </html>
