@@ -1,9 +1,3 @@
-<!--
-* =========================================================================================
- * SISTEM INFORMASI PERENCANAAN E-RKBMD & RKPBMD KONAWE TA 2027
- * Hak Cipta (C) 2026 IRMAN. Hak Cipta Dilindungi Undang-Undang.
- * =========================================================================================
--->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -12,9 +6,7 @@
     <title>Sistem Terpadu RKBMD &amp; RKPBMD Kab. Konawe TA. 2027</title>
     <meta name="theme-color" content="#1e3a8a">
 
-    <!-- ======================================================== -->
-    <!-- [SHIELD] ANTI GOOGLE BOT, CRAWLER, & SEARCH ENGINE TRAP   -->
-    <!-- ======================================================== -->
+    <!-- [MODUL 1] ANTI GOOGLE BOT & CRAWLER SHIELD -->
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate">
     <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, max-image-preview:none">
     <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet">
@@ -28,13 +20,6 @@
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
     <style>
-        /* GUARD KRUSIAL: Mencegah modal transparan menutupi klik tombol */
-        .hidden, [hidden] { 
-            display: none !important; 
-            visibility: hidden !important;
-            pointer-events: none !important;
-        }
-
         body { 
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             -webkit-tap-highlight-color: transparent; 
@@ -45,19 +30,10 @@
         .select-none, label, th, h1, h2, h3, .donut-segment, .card-box {
             user-select: none !important;
             -webkit-user-select: none !important;
+            cursor: default;
         }
         .cursor-pointer, button, [onclick] {
             cursor: pointer !important;
-            pointer-events: auto !important;
-        }
-        input, select, textarea {
-            font-size: 13px !important;
-            line-height: 1.4 !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-            -webkit-user-select: text !important;
-            user-select: text !important;
-            pointer-events: auto !important;
         }
         input[readonly], textarea[readonly] {
             caret-color: transparent !important;
@@ -69,7 +45,14 @@
         }
         .donut-segment:hover { stroke-width: 24; opacity: 0.9; }
 
-        /* ATURAN CETAK RESMI PERMENDAGRI NO. 61 TAHUN 2023 */
+        input, select, textarea {
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* ATURAN CETAK RESMI ASLI ANDA (DIPERTAHANKAN 100%) */
         @media print {
             @page {
                 size: legal landscape;
@@ -192,14 +175,10 @@
 
             <div id="login-alert" class="mt-4 text-center text-xs font-bold text-rose-500 p-2.5 bg-rose-50 border border-rose-200 rounded-xl hidden select-none"></div>
 
-            <div class="mt-4 flex flex-col items-center gap-1.5 select-none">
-                <button type="button" id="btnTestConn" onclick="testServerConnection()" class="text-[11px] text-blue-600 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+            <div class="mt-4 flex justify-center select-none">
+                <button type="button" onclick="testServerConnection()" class="text-[11px] text-blue-600 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
                     <i class="fa-solid fa-network-wired"></i> Cek Status Koneksi Server
                 </button>
-                <!-- INDIKATOR VERSI PENANGKAL CACHE BROWSER -->
-                <span class="text-[9px] font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                    ENGINE AKTIF: V.2027-RESMI
-                </span>
             </div>
 
             <div class="mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-400 font-medium select-none">
@@ -916,14 +895,9 @@
 
     <!-- ================= JAVASCRIPT LOGIKA KLIEN ================= -->
     <script>
-        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbyOLAJkuugkCGrY4LIrSrV2jUOOXETLWf7ZLIRmTuEhHFP_e0IQsMB-sPHqmZ2KrYPkTA/exec";
-        
-        // Failsafe Storage Access (Aman dari SecurityError jika dibuka lokal)
-        try {
-            localStorage.removeItem('custom_rkbmd_url');
-        } catch (e) {}
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwvEHaig9sUcGjI5AGV67sCblaxtMfzFTQI2np1Sx6tGUbpheEHOm2jn6-YtrbgVSV8/exec";
+        let API_URL = localStorage.getItem('custom_rkbmd_url') || DEFAULT_API_URL;
 
-        let API_URL = DEFAULT_API_URL;
         let currentUser = null;
         let authToken = null;
         let dataset = [];
@@ -935,24 +909,29 @@
         let currentTab = "RKBMD";
         let modalActiveFilter = "SEMUA";
 
+        // Variabel Paginasi
         let currentPage = 1;
         const rowsPerPage = 15;
+
+        // Variabel Countdown Timer
         let countdownTimer = null;
         let serverTimeOffsetMs = 0;
+
+        // Callback Dialog Modal Sistem
         let dialogConfirmCallback = null;
         let dialogCancelCallback = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            try {
-                const saved = sessionStorage.getItem('user_rkbmd_session');
-                const token = sessionStorage.getItem('user_rkbmd_token');
-                if (saved && token) {
+            const saved = sessionStorage.getItem('user_rkbmd_session');
+            const token = sessionStorage.getItem('user_rkbmd_token');
+            if (saved && token) {
+                try {
                     currentUser = JSON.parse(saved);
                     authToken = token;
                     initDashboard();
+                } catch(e) {
+                    sessionStorage.clear();
                 }
-            } catch(e) {
-                sessionStorage.clear();
             }
         });
 
@@ -1048,11 +1027,8 @@
             if (typeof dialogCancelCallback === "function") dialogCancelCallback();
         }
 
-        // 3. CEK KONEKSI DENGAN RESPON INSTAN
+        // 3. CEK KONEKSI
         async function testServerConnection() {
-            const btn = document.getElementById('btnTestConn');
-            if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Menghubungkan Server...';
-            
             showLoader("Memeriksa status respon database...");
             try {
                 const resp = await fetch(`${API_URL}?action=ping`);
@@ -1068,8 +1044,6 @@
             } catch (err) {
                 hideLoader();
                 openServerStatusModal(false, "Gagal Terhubung Ke Server", "Tidak dapat menjangkau server Apps Script. Pastikan Web App disetel ke 'Anyone'.");
-            } finally {
-                if (btn) btn.innerHTML = '<i class="fa-solid fa-network-wired"></i> Cek Status Koneksi Server';
             }
         }
 
@@ -1166,7 +1140,7 @@
             switchMode('RKBMD');
         }
 
-        // 5. FETCH DATA SPREADSHEET
+        // 5. FETCH DATA, AGENDA, & KARTU KENDALI DARI SPREADSHEET
         async function fetchDataFromDatabase() {
             showLoader("Menghubungkan ke Database...");
             try {
@@ -1918,7 +1892,7 @@
             closeBarangModal();
         }
 
-        // 15. MONITORING KEPATUHAN & DIAGRAM DONUT
+        // 15. MONITORING KEPATUHAN & DIAGRAM DONUT GLOBAL
         function renderAllViews() {
             renderTables();
             updateStats();
@@ -2259,7 +2233,7 @@
         }
 
         // =================================================================
-        // 17. CETAK RESMI FORMAT PERMENDAGRI NO. 61 TAHUN 2023
+        // 17. CETAK RESMI FORMAT PERMENDAGRI NO. 61 TAHUN 2023 (RESMI MURNI)
         // =================================================================
         function openPrintConfigModal() {
             const modal = document.getElementById('printConfigModal');
@@ -2273,43 +2247,33 @@
             const todayStr = new Date().toLocaleDateString('id-ID', options);
             tglInput.value = `Unaaha, ${todayStr}`;
 
-            const isAdmin = (currentUser && currentUser.kategori === "Admin");
+            const isAdmin = (currentUser.kategori === "Admin");
             const isInduk = (childUnitsList && childUnitsList.length > 0);
-
-            function getOfficialDropdownLabel(namaUnit, isKonsolidasi) {
-                let clean = String(namaUnit || "").replace(/\s*\(\+[^)]*\)/gi, "").trim();
-                if (isKonsolidasi) {
-                    if (/^kecamatan\b/i.test(clean)) {
-                        return "Konsolidasi " + clean;
-                    }
-                    if (/^dinas kesehatan\b/i.test(clean)) {
-                        return "Konsolidasi Dinas Kesehatan";
-                    }
-                    return "Konsolidasi " + clean;
-                }
-                return clean;
-            }
 
             let skpdOptions = "";
             if (isAdmin) {
+                // 1. OPSI KHUSUS ADMIN RESMI KABUPATEN
                 skpdOptions += `<option value="SEMUA_KABUPATEN">Konsolidasi Pemerintah Kabupaten Konawe</option>`;
+
+                // 2. DAFTAR RESMI: Tanpa teks (+ Kelurahan/Unit Binaan)
                 masterSkpdList.forEach(s => {
                     const punyaAnak = masterSkpdList.some(child => child.skpdInduk && child.skpdInduk.toLowerCase() === s.nama.toLowerCase());
                     if (punyaAnak) {
-                        skpdOptions += `<option value="${s.nama}__GABUNGAN">${getOfficialDropdownLabel(s.nama, true)}</option>`;
-                        skpdOptions += `<option value="${s.nama}">${getOfficialDropdownLabel(s.nama, false)}</option>`;
+                        skpdOptions += `<option value="${s.nama}__GABUNGAN">Konsolidasi ${s.nama}</option>`;
+                        skpdOptions += `<option value="${s.nama}">${s.nama}</option>`;
                     } else {
-                        skpdOptions += `<option value="${s.nama}">${getOfficialDropdownLabel(s.nama, false)}</option>`;
+                        skpdOptions += `<option value="${s.nama}">${s.nama}</option>`;
                     }
                 });
             } else if (isInduk) {
-                skpdOptions += `<option value="GABUNGAN_INDUK">${getOfficialDropdownLabel(currentUser.nama_skpd, true)}</option>`;
-                skpdOptions += `<option value="${currentUser.nama_skpd}">${getOfficialDropdownLabel(currentUser.nama_skpd, false)}</option>`;
+                // Hierarki Resmi Tingkat Kecamatan / Dinas Kesehatan (Tanpa label informal)
+                skpdOptions += `<option value="GABUNGAN_INDUK">Konsolidasi ${currentUser.nama_skpd}</option>`;
+                skpdOptions += `<option value="${currentUser.nama_skpd}">${currentUser.nama_skpd}</option>`;
                 childUnitsList.forEach(child => {
-                    skpdOptions += `<option value="${child}">${getOfficialDropdownLabel(child, false)}</option>`;
+                    skpdOptions += `<option value="${child}">${child}</option>`;
                 });
             } else {
-                skpdOptions = `<option value="${currentUser.nama_skpd}">${getOfficialDropdownLabel(currentUser.nama_skpd, false)}</option>`;
+                skpdOptions = `<option value="${currentUser.nama_skpd}">${currentUser.nama_skpd}</option>`;
             }
             targetSelect.innerHTML = skpdOptions;
 
@@ -2359,21 +2323,13 @@
             let rows = [];
             let displayTitleUnit = targetVal;
 
-            function formatOfficialDocTitle(namaUnit, isKonsolidasi) {
-                let clean = String(namaUnit || "").replace(/\s*\(\+[^)]*\)/gi, "").trim().toUpperCase();
-                if (isKonsolidasi) {
-                    if (clean.indexOf("KONSOLIDASI") === -1) {
-                        return "KONSOLIDASI " + clean;
-                    }
-                }
-                return clean;
-            }
-
             if (targetVal === "SEMUA_KABUPATEN") {
+                // Judul Resmi Permendagri: KONSOLIDASI PEMERINTAH KABUPATEN KONAWE
                 displayTitleUnit = `KONSOLIDASI PEMERINTAH KABUPATEN KONAWE`;
                 rows = dataset.filter(i => i.jenis === currentTab);
             } else if (targetVal === "GABUNGAN_INDUK") {
-                displayTitleUnit = formatOfficialDocTitle(currentUser.nama_skpd, true);
+                // Judul Resmi Permendagri: KONSOLIDASI KECAMATAN ... / KONSOLIDASI DINAS KESEHATAN
+                displayTitleUnit = `KONSOLIDASI ${currentUser.nama_skpd.toUpperCase()}`;
                 rows = dataset.filter(i => 
                     i.jenis === currentTab && (
                         i.skpd.toLowerCase() === currentUser.nama_skpd.toLowerCase() ||
@@ -2382,7 +2338,7 @@
                 );
             } else if (targetVal.endsWith("__GABUNGAN")) {
                 const indukName = targetVal.replace("__GABUNGAN", "");
-                displayTitleUnit = formatOfficialDocTitle(indukName, true);
+                displayTitleUnit = `KONSOLIDASI ${indukName.toUpperCase()}`;
                 const anakUnits = masterSkpdList
                     .filter(s => s.skpdInduk && s.skpdInduk.toLowerCase() === indukName.toLowerCase())
                     .map(s => s.nama.toLowerCase());
@@ -2394,7 +2350,7 @@
                     )
                 );
             } else {
-                displayTitleUnit = formatOfficialDocTitle(targetVal, false);
+                displayTitleUnit = targetVal.toUpperCase();
                 rows = dataset.filter(i => i.jenis === currentTab && i.skpd.toLowerCase() === targetVal.toLowerCase());
             }
 
@@ -2412,6 +2368,7 @@
             const docContainer = document.getElementById('printable-doc');
 
             if (isRk) {
+                // FORMAT RESMI RKBMD PENGADAAN (15 KOLOM MURNI)
                 docContainer.innerHTML = `
                     <div style="font-family: 'Times New Roman', Times, serif; line-height: 1.15;">
                         <div style="text-align: right; font-size: 8.5pt; font-style: italic; margin-bottom: 2px;">
@@ -2525,6 +2482,7 @@
                     </div>
                 `;
             } else {
+                // FORMAT RESMI RKPBMD PEMELIHARAAN
                 docContainer.innerHTML = `
                     <div style="font-family: 'Times New Roman', Times, serif; line-height: 1.15;">
                         <div style="text-align: right; font-size: 8.5pt; font-style: italic; margin-bottom: 2px;">
@@ -2662,6 +2620,29 @@
             const wb = XLSX.utils.table_to_book(table, { sheet: currentTab });
             XLSX.writeFile(wb, `${currentTab}_Konawe_2027_${Date.now()}.xlsx`);
         }
+    </script>
+
+    <!-- [MODUL 2] ANTI-INSPECT RINGAN (TIDAK MEMBEKUKAN HALAMAN & TIDAK MERUSAK CETAK) -->
+    <script>
+        (function() {
+            "use strict";
+            // Kunci Klik Kanan (Kecuali input/textarea)
+            document.addEventListener("contextmenu", function(e) {
+                const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+                if (tag !== "input" && tag !== "textarea") {
+                    e.preventDefault();
+                    return false;
+                }
+            }, { capture: true });
+
+            // Kunci Shortcut DevTools & View Source
+            document.addEventListener("keydown", function(e) {
+                if (e.keyCode === 123) { e.preventDefault(); return false; } // F12
+                if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) { e.preventDefault(); return false; }
+                if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) { e.preventDefault(); return false; }
+                if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) { e.preventDefault(); return false; }
+            }, { capture: true });
+        })();
     </script>
 </body>
 </html>
