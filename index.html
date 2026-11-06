@@ -2707,26 +2707,45 @@
             XLSX.writeFile(wb, `${currentTab}_Konawe_2027_${Date.now()}.xlsx`);
         }
     <!-- ======================================================== -->
-    <!-- [SECURITY] ANTI-INSPECT, ANTI-COPY & ANTI-DEBUGGER TRAP  -->
+    <!-- [SECURITY PRO] ANTI-INSPECT, ANTI-COPY & NON-FREEZE TRAP -->
     <!-- ======================================================== -->
+    <style>
+        /* Tetap izinkan input & form agar bisa diklik dan diketik normal */
+        input, textarea, select {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+            pointer-events: auto !important;
+            cursor: text !important;
+        }
+        button, a, [onclick] {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+    </style>
+
     <script>
         (function() {
             "use strict";
 
-            // 1. Kunci Menu Klik Kanan
+            // 1. Kunci Klik Kanan (Kecuali pada kotak input/textarea agar user bisa paste password)
             document.addEventListener("contextmenu", function(e) {
-                e.preventDefault();
-                return false;
+                const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+                if (tag !== "input" && tag !== "textarea") {
+                    e.preventDefault();
+                    return false;
+                }
             }, { capture: true });
 
-            // 2. Kunci Kombinasi Tombol Inspeksi DevTools & View Source
+            // 2. Kunci Shortcut Inspeksi DevTools, View Source, & Save Page
             document.addEventListener("keydown", function(e) {
                 // F12
                 if (e.keyCode === 123) {
                     e.preventDefault();
                     return false;
                 }
-                // Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspect Element)
+                // Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspect)
                 if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
                     e.preventDefault();
                     return false;
@@ -2743,27 +2762,26 @@
                 }
             }, { capture: true });
 
-            // 3. Matikan Clipboard Copy / Cut pada elemen sistem (Kecuali input aktif)
+            // 3. Matikan Copy pada data tabel dan laporan (Form login tetap bisa diketik)
             document.addEventListener("copy", function(e) {
-                const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
-                if (tag !== "input" && tag !== "textarea") {
+                const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+                if (activeTag !== "input" && activeTag !== "textarea") {
                     e.preventDefault();
                 }
             }, { capture: true });
 
-            // 4. Anti-Debugger Trap (Membekukan eksekusi jika konsol dibuka paksa)
-            function initDebuggerTrap() {
-                function _trap() {
-                    try {
-                        (function() {
-                            return false;
-                        }["constructor"]("debugger")["call"]());
-                    } catch (err) {}
+            // 4. Detektor DevTools Bersih (Pembersih Console Otomatis tanpa membekukan layar)
+            setInterval(function() {
+                const threshold = 160;
+                const devtoolsOpen = (window.outerWidth - window.innerWidth > threshold) || 
+                                     (window.outerHeight - window.innerHeight > threshold);
+                if (devtoolsOpen) {
+                    // Bersihkan jejak log console secara silent tanpa mematikan thread UI
+                    if (window.console && window.console.clear) {
+                        console.clear();
+                    }
                 }
-                setInterval(_trap, 500);
-            }
-            initDebuggerTrap();
+            }, 1000);
         })();
     </script>
-</body>
 </html>
