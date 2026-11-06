@@ -2,16 +2,6 @@
 * =========================================================================================
  * SISTEM INFORMASI PERENCANAAN E-RKBMD & RKPBMD KONAWE TA 2027
  * Hak Cipta (C) 2026 IRMAN. Hak Cipta Dilindungi Undang-Undang.
- * -----------------------------------------------------------------------------------------
- * PERINGATAN KEPEMILIKAN & LISENSI KETAT (PROPRIETARY LICENSE):
- * 1. Seluruh kode sumber, arsitektur, basis data, dan antarmuka aplikasi ini adalah properti 
- *    eksklusif IRMAN.
- * 2. DILARANG KERAS menyalin, menggandakan, mendistribusikan ulang, memodifikasi, mendekompilasi, 
- *    melakukan reverse-engineering, atau menyebarluaskan bagian apapun dari sistem ini tanpa 
- *    izin tertulis resmi.
- * 3. Pelanggaran terhadap hak kekayaan intelektual ini akan ditindaklanjuti secara hukum 
- *    sesuai Undang-Undang Republik Indonesia Nomor 28 Tahun 2014 tentang Hak Cipta dan 
- *    Undang-Undang Nomor 11 Tahun 2008 tentang Informasi dan Transaksi Elektronik (UU ITE).
  * =========================================================================================
 -->
 <!DOCTYPE html>
@@ -29,28 +19,6 @@
     <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, max-image-preview:none">
     <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet">
     <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive">
-    <meta name="slurp" content="noindex, nofollow">
-    <meta name="duckduckbot" content="noindex, nofollow">
-    <meta name="baiduspider" content="noindex, nofollow">
-    <meta name="yandexbot" content="noindex, nofollow">
-
-    <script>
-        (function() {
-            // Deteksi bot crawler mesin pencari populer via User-Agent
-            const botList = ["googlebot", "bingbot", "yandexbot", "duckduckbot", "baiduspider", "slurp", "ia_archiver"];
-            const currentUa = (navigator.userAgent || "").toLowerCase();
-            const isBot = botList.some(bot => currentUa.indexOf(bot) !== -1);
-
-            if (isBot) {
-                window.stop();
-                if (document.documentElement) {
-                    document.documentElement.innerHTML = "";
-                }
-                window.location.replace("about:blank");
-            }
-        })();
-    </script>
-    <!-- ======================================================== -->
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -60,6 +28,13 @@
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
     <style>
+        /* GUARD KRUSIAL: Mencegah modal transparan menutupi klik tombol */
+        .hidden, [hidden] { 
+            display: none !important; 
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
         body { 
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             -webkit-tap-highlight-color: transparent; 
@@ -70,10 +45,10 @@
         .select-none, label, th, h1, h2, h3, .donut-segment, .card-box {
             user-select: none !important;
             -webkit-user-select: none !important;
-            cursor: default;
         }
         .cursor-pointer, button, [onclick] {
             cursor: pointer !important;
+            pointer-events: auto !important;
         }
         input, select, textarea {
             font-size: 13px !important;
@@ -217,10 +192,14 @@
 
             <div id="login-alert" class="mt-4 text-center text-xs font-bold text-rose-500 p-2.5 bg-rose-50 border border-rose-200 rounded-xl hidden select-none"></div>
 
-            <div class="mt-4 flex justify-center select-none">
-                <button type="button" onclick="testServerConnection()" class="text-[11px] text-blue-600 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+            <div class="mt-4 flex flex-col items-center gap-1.5 select-none">
+                <button type="button" id="btnTestConn" onclick="testServerConnection()" class="text-[11px] text-blue-600 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
                     <i class="fa-solid fa-network-wired"></i> Cek Status Koneksi Server
                 </button>
+                <!-- INDIKATOR VERSI PENANGKAL CACHE BROWSER -->
+                <span class="text-[9px] font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    ENGINE AKTIF: V.2027-RESMI
+                </span>
             </div>
 
             <div class="mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-400 font-medium select-none">
@@ -257,7 +236,7 @@
             </div>
         </header>
 
-        <!-- KARTU STATISTIK (4 KOTAK ASLI) -->
+        <!-- KARTU STATISTIK -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 select-none">
             <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm card-box">
                 <span class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Total Usulan Masuk</span>
@@ -937,11 +916,14 @@
 
     <!-- ================= JAVASCRIPT LOGIKA KLIEN ================= -->
     <script>
-        // URL API Google Apps Script Backend
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwvEHaig9sUcGjI5AGV67sCblaxtMfzFTQI2np1Sx6tGUbpheEHOm2jn6-YtrbgVSV8/exec";
-        localStorage.removeItem('custom_rkbmd_url');
-        let API_URL = DEFAULT_API_URL;
+        
+        // Failsafe Storage Access (Aman dari SecurityError jika dibuka lokal)
+        try {
+            localStorage.removeItem('custom_rkbmd_url');
+        } catch (e) {}
 
+        let API_URL = DEFAULT_API_URL;
         let currentUser = null;
         let authToken = null;
         let dataset = [];
@@ -953,29 +935,24 @@
         let currentTab = "RKBMD";
         let modalActiveFilter = "SEMUA";
 
-        // Variabel Paginasi
         let currentPage = 1;
         const rowsPerPage = 15;
-
-        // Variabel Countdown Timer
         let countdownTimer = null;
         let serverTimeOffsetMs = 0;
-
-        // Callback Dialog Modal Sistem
         let dialogConfirmCallback = null;
         let dialogCancelCallback = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            const saved = sessionStorage.getItem('user_rkbmd_session');
-            const token = sessionStorage.getItem('user_rkbmd_token');
-            if (saved && token) {
-                try {
+            try {
+                const saved = sessionStorage.getItem('user_rkbmd_session');
+                const token = sessionStorage.getItem('user_rkbmd_token');
+                if (saved && token) {
                     currentUser = JSON.parse(saved);
                     authToken = token;
                     initDashboard();
-                } catch(e) {
-                    sessionStorage.clear();
                 }
+            } catch(e) {
+                sessionStorage.clear();
             }
         });
 
@@ -1071,8 +1048,11 @@
             if (typeof dialogCancelCallback === "function") dialogCancelCallback();
         }
 
-        // 3. CEK KONEKSI
+        // 3. CEK KONEKSI DENGAN RESPON INSTAN
         async function testServerConnection() {
+            const btn = document.getElementById('btnTestConn');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Menghubungkan Server...';
+            
             showLoader("Memeriksa status respon database...");
             try {
                 const resp = await fetch(`${API_URL}?action=ping`);
@@ -1088,6 +1068,8 @@
             } catch (err) {
                 hideLoader();
                 openServerStatusModal(false, "Gagal Terhubung Ke Server", "Tidak dapat menjangkau server Apps Script. Pastikan Web App disetel ke 'Anyone'.");
+            } finally {
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-network-wired"></i> Cek Status Koneksi Server';
             }
         }
 
@@ -1184,7 +1166,7 @@
             switchMode('RKBMD');
         }
 
-        // 5. FETCH DATA, AGENDA, & KARTU KENDALI DARI SPREADSHEET
+        // 5. FETCH DATA SPREADSHEET
         async function fetchDataFromDatabase() {
             showLoader("Menghubungkan ke Database...");
             try {
@@ -2045,7 +2027,7 @@
             document.getElementById('metricPuskesmasTotal').innerText = `/ ${c.pkmTotal}`;
             document.getElementById('metricPuskesmasPercent').innerText = `${c.pkmTotal ? Math.round((c.pkmSudah / c.pkmTotal) * 100) : 0}% Selesai`;
 
-            document.getElementById('metricKelurahanSudah').innerText = c.kelSudah;
+            document.getElementById('metricKelurahanSudah').innerText = c.kelKel = c.kelSudah;
             document.getElementById('metricKelurahanTotal').innerText = `/ ${c.kelTotal}`;
             document.getElementById('metricKelurahanPercent').innerText = `${c.kelTotal ? Math.round((c.kelSudah / c.kelTotal) * 100) : 0}% Selesai`;
 
@@ -2277,7 +2259,7 @@
         }
 
         // =================================================================
-        // 17. CETAK RESMI FORMAT PERMENDAGRI NO. 61 TAHUN 2023 (PERBAIKAN)
+        // 17. CETAK RESMI FORMAT PERMENDAGRI NO. 61 TAHUN 2023
         // =================================================================
         function openPrintConfigModal() {
             const modal = document.getElementById('printConfigModal');
@@ -2294,7 +2276,6 @@
             const isAdmin = (currentUser && currentUser.kategori === "Admin");
             const isInduk = (childUnitsList && childUnitsList.length > 0);
 
-            // Nomenklatur resmi tata naskah dinas Permendagri No. 61 Tahun 2023
             function getOfficialDropdownLabel(namaUnit, isKonsolidasi) {
                 let clean = String(namaUnit || "").replace(/\s*\(\+[^)]*\)/gi, "").trim();
                 if (isKonsolidasi) {
@@ -2681,68 +2662,6 @@
             const wb = XLSX.utils.table_to_book(table, { sheet: currentTab });
             XLSX.writeFile(wb, `${currentTab}_Konawe_2027_${Date.now()}.xlsx`);
         }
-    </script>
-
-    <!-- ======================================================== -->
-    <!-- [SECURITY PRO] ANTI-INSPECT, ANTI-COPY & NON-FREEZE TRAP -->
-    <!-- ======================================================== -->
-    <script>
-        (function() {
-            "use strict";
-
-            // 1. Kunci Klik Kanan (Kecuali pada kotak input/textarea agar user bisa paste password)
-            document.addEventListener("contextmenu", function(e) {
-                const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
-                if (tag !== "input" && tag !== "textarea") {
-                    e.preventDefault();
-                    return false;
-                }
-            }, { capture: true });
-
-            // 2. Kunci Shortcut Inspeksi DevTools, View Source, & Save Page
-            document.addEventListener("keydown", function(e) {
-                // F12
-                if (e.keyCode === 123) {
-                    e.preventDefault();
-                    return false;
-                }
-                // Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspect)
-                if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
-                    e.preventDefault();
-                    return false;
-                }
-                // Mac: Cmd+Opt+I, Cmd+Opt+J, Cmd+Opt+C
-                if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
-                    e.preventDefault();
-                    return false;
-                }
-                // Ctrl+U (View Source), Ctrl+S (Save Page)
-                if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) {
-                    e.preventDefault();
-                    return false;
-                }
-            }, { capture: true });
-
-            // 3. Matikan Copy pada data tabel dan laporan (Form login tetap bisa diketik)
-            document.addEventListener("copy", function(e) {
-                const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
-                if (activeTag !== "input" && activeTag !== "textarea") {
-                    e.preventDefault();
-                }
-            }, { capture: true });
-
-            // 4. Detektor DevTools Bersih (Pembersih Console Otomatis tanpa membekukan layar)
-            setInterval(function() {
-                const threshold = 160;
-                const devtoolsOpen = (window.outerWidth - window.innerWidth > threshold) || 
-                                     (window.outerHeight - window.innerHeight > threshold);
-                if (devtoolsOpen) {
-                    if (window.console && window.console.clear) {
-                        console.clear();
-                    }
-                }
-            }, 1000);
-        })();
     </script>
 </body>
 </html>
